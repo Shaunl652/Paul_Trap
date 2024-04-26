@@ -1,5 +1,8 @@
 simulate:
-	rm *.out
+	-rm TrapAC.u_axis.out
+	-rm TrapAC.v_axis.out
+	-rm TrapAC.z_axis.out
+	-rm TrapDC.z_axis.out
 	python3 geo_write.py
 	python3 Axes_write.py
 	scuff-static < args_uAC
@@ -20,8 +23,8 @@ mesh:
 	mmgs -hausd 50 Rod.msh
 
 Surface:
-	rm *.out
+	-rm TrapAC.plane.out
 	python3 Axes_write.py
 	python3 Plane_axes.py
 	scuff-static < args_Plane
-	python3 Plot_Surf.py
+	
