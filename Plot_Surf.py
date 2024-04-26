@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
+Created on Wed Apr 24 15:53:49 2024
+
+@author: shaun
+"""
 
 import numpy as np
 from scipy.interpolate import griddata
@@ -22,12 +27,14 @@ with open('TrapAC.plane.out','r') as file:
 with open('dims.txt','r') as file:
 	vals = [line for line in file if valid(line)]
     
-r0 = float(vals[0])*1e3
-z0 = float(vals[1])*1e3
+x0 = float(vals[0])*1e3
+y0 = float(vals[1])*1e3
+z0 = float(vals[2])*1e3
 
-xs = np.linspace(-r0,+r0,101)/10
-ys = np.linspace(-r0,+r0,101)/10
-zs = np.linspace(-z0,+z0,101)/10
+
+xs = np.linspace(-x0,+x0,101)#/2
+ys = np.linspace(-y0,+y0,101)#/2
+zs = np.linspace(-z0,+z0,101)#/2
 
 XS,YS = np.meshgrid(xs,ys)
 
@@ -40,15 +47,15 @@ coords = np.array([xvals,yvals]).T
 
 plot = griddata(coords, vals, (XS,YS))
 
-with open('x_axis.dat','r')as file:
-    xdata = np.array([line.strip().split() for line in file])
+with open('u_axis.dat','r')as file:
+    udata = np.array([line.strip().split() for line in file])
     
-xlocs = np.array([[float(x[0]),float(x[1])] for x in xdata])/1e3
+us = np.array([[float(x[0]),float(x[1])] for x in udata])/1e3
     
-with open('y_axis.dat','r')as file:
-    ydata = np.array([line.strip().split() for line in file])
+with open('v_axis.dat','r')as file:
+    vdata = np.array([line.strip().split() for line in file])
     
-ylocs = np.array([[float(x[0]),float(x[1])] for x in ydata])/1e3
+vs = np.array([[float(x[0]),float(x[1])] for x in vdata])/1e3
 
 import matplotlib.pyplot as plt
 
@@ -58,9 +65,8 @@ m=ax.contourf(xs/1e3,ys/1e3,plot,levels=levels)
 ax.contour(xs/1e3,ys/1e3,plot,2,colors='k',levels=levels)
 fig.colorbar(m)
 
-ax.scatter(xlocs[:,0],xlocs[:,1],color='r',marker='x',label='x axis')
-ax.scatter(ylocs[:,0],ylocs[:,1],color='w',marker='x',label='y axis')
+ax.scatter(us[:,0],us[:,1],color='r',marker='x',label='u axis')
+ax.scatter(vs[:,0],vs[:,1],color='w',marker='x',label='v axis')
 ax.legend()
-ax.set(xlabel='x [mm]', ylabel='y [mm]')
-
-fig.show()
+ax.set(xlabel='x [mm]',ylabel='y [mm]')
+#ax.set_xlim(-6,6)
