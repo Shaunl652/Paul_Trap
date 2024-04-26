@@ -27,4 +27,4 @@ Surface:
 	python3 Axes_write.py
 	python3 Plane_axes.py
 	scuff-static < args_Plane
-	
+	python3 Plot_Surf.py
