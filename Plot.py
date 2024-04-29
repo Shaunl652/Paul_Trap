@@ -151,8 +151,8 @@ ax.plot(z_axis/1e-3,f(z_axis,vals[0],vals[1],vals[2]),label=f'Fit: $ax^2 + bx + 
 ax.set(xlabel='$z$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to end caps')
 ax.legend(loc='upper right')
 
-#alpha_zDC = vals[0]*z0**2
-#print(f'alpha_z^DC = {abs(alpha_zDC):.4f}')
+alpha_zDC = vals[0]*z0**2
+print(f'alpha_z^DC = {abs(alpha_zDC):.4f}')
 
 #alpha_rAC = alpha_xAC+alpha_yAC/2
 #print(f'alpha_r^AC = {alpha_rAC:.4f}')
