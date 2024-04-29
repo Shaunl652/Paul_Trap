@@ -44,23 +44,36 @@ with open('x_axis.dat','r')as file:
     xdata = np.array([line.strip().split() for line in file])
     
 xlocs = np.array([[float(x[0]),float(x[1])] for x in xdata])/1e3
+
+with open('TrapAC.x_axis.out','r') as file:
+    lines = (line.strip() for line in file if valid(line))
+    xACdata = np.array([extract(line) for line in lines])
+    
+x_pot = [float(phi) for phi in xACdata[:,4]]
     
 with open('y_axis.dat','r')as file:
     ydata = np.array([line.strip().split() for line in file])
     
 ylocs = np.array([[float(x[0]),float(x[1])] for x in ydata])/1e3
 
+with open('TrapAC.y_axis.out','r') as file:
+    lines = (line.strip() for line in file if valid(line))
+    yACdata = np.array([extract(line) for line in lines])
+    
+y_pot = [float(phi) for phi in yACdata[:,4]]
+
 import matplotlib.pyplot as plt
 
-fig,ax = plt.subplots()
-levels = np.linspace(plot.min(),plot.max(),50)
-m=ax.contourf(xs/1e3,ys/1e3,plot,levels=levels)
-ax.contour(xs/1e3,ys/1e3,plot,2,colors='k',levels=levels)
-fig.colorbar(m)
+fig,ax = plt.subplots(subplot_kw={'projection':'3d'})
+#levels = np.linspace(plot.min(),plot.max(),50)
+#m=ax.contourf(xs/1e3,ys/1e3,plot,levels=levels)
+#ax.contour(xs/1e3,ys/1e3,plot,2,colors='k',levels=levels)
+#fig.colorbar(m)
+ax.plot_surface(XS/1e3,YS/1e3,plot,cmap='jet',alpha=0.8)
 
-ax.scatter(xlocs[:,0],xlocs[:,1],color='r',marker='x',label='x axis')
-ax.scatter(ylocs[:,0],ylocs[:,1],color='w',marker='x',label='y axis')
+ax.scatter(xlocs[:,0],xlocs[:,1],x_pot,color='r',marker='x',label='u axis')
+ax.scatter(ylocs[:,0],ylocs[:,1],y_pot,color='k',marker='x',label='v axis')
 ax.legend()
-ax.set(xlabel='x [mm]', ylabel='y [mm]')
-
-fig.show()
+ax.set(xlabel='x [mm]',ylabel='y [mm]',zlabel='$\\phi(x,y)$')
+#ax.set_xlim(-6,6)
+plt.show()
