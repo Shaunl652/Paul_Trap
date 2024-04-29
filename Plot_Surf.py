@@ -32,9 +32,9 @@ y0 = float(vals[1])*1e3
 z0 = float(vals[2])*1e3
 
 
-xs = np.linspace(-x0,+x0,101)/10
-ys = np.linspace(-y0,+y0,101)/10
-zs = np.linspace(-z0,+z0,101)/10
+xs = np.linspace(-x0,+x0,101)/1
+ys = np.linspace(-y0,+y0,101)/1
+zs = np.linspace(-z0,+z0,101)/1
 
 XS,YS = np.meshgrid(xs,ys)
 
