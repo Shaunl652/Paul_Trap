@@ -1,0 +1,3 @@
+geometry TrapAC.scuffgeo
+EPFile   y_axis.dat
+excitationfile VAC.Excitations
