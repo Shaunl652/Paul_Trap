@@ -32,9 +32,9 @@ y0 = float(vals[1])*1e3
 z0 = float(vals[2])*1e3
 
 
-xs = np.linspace(-x0,+x0,101)#/2
-ys = np.linspace(-y0,+y0,101)#/2
-zs = np.linspace(-z0,+z0,101)#/2
+xs = np.linspace(-x0,+x0,101)/10
+ys = np.linspace(-y0,+y0,101)/10
+zs = np.linspace(-z0,+z0,101)/10
 
 XS,YS = np.meshgrid(xs,ys)
 
@@ -48,14 +48,26 @@ coords = np.array([xvals,yvals]).T
 plot = griddata(coords, vals, (XS,YS))
 
 with open('u_axis.dat','r')as file:
-    udata = np.array([line.strip().split() for line in file])
+    xdata = np.array([line.strip().split() for line in file])
     
-us = np.array([[float(x[0]),float(x[1])] for x in udata])/1e3
+xlocs = np.array([[float(x[0]),float(x[1])] for x in xdata])/1e3
+
+with open('TrapAC.u_axis.out','r') as file:
+    lines = (line.strip() for line in file if valid(line))
+    xACdata = np.array([extract(line) for line in lines])
+    
+x_pot = [float(phi) for phi in xACdata[:,4]]
     
 with open('v_axis.dat','r')as file:
-    vdata = np.array([line.strip().split() for line in file])
+    ydata = np.array([line.strip().split() for line in file])
     
-vs = np.array([[float(x[0]),float(x[1])] for x in vdata])/1e3
+ylocs = np.array([[float(x[0]),float(x[1])] for x in ydata])/1e3
+
+with open('TrapAC.v_axis.out','r') as file:
+    lines = (line.strip() for line in file if valid(line))
+    yACdata = np.array([extract(line) for line in lines])
+    
+y_pot = [float(phi) for phi in yACdata[:,4]]
 
 import matplotlib.pyplot as plt
 
@@ -64,11 +76,11 @@ fig,ax = plt.subplots(subplot_kw={'projection':'3d'})
 #m=ax.contourf(xs/1e3,ys/1e3,plot,levels=levels)
 #ax.contour(xs/1e3,ys/1e3,plot,2,colors='k',levels=levels)
 #fig.colorbar(m)
-ax.plot_surface(XS/1e3,YS/1e3,plot,cmap='jet')
+ax.plot_surface(XS/1e3,YS/1e3,plot,cmap='jet',alpha=0.8)
 
-#ax.scatter(us[:,0],us[:,1],color='r',marker='x',label='u axis')
-#ax.scatter(vs[:,0],vs[:,1],color='w',marker='x',label='v axis')
-#ax.legend()
+ax.scatter(xlocs[:,0],xlocs[:,1],x_pot,color='r',marker='x',label='u axis')
+ax.scatter(ylocs[:,0],ylocs[:,1],y_pot,color='k',marker='x',label='v axis')
+ax.legend()
 ax.set(xlabel='x [mm]',ylabel='y [mm]',zlabel='$\\phi(x,y)$')
 #ax.set_xlim(-6,6)
 plt.show()
