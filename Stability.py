@@ -26,9 +26,9 @@ density = 2000 # particle density kg/m^3
 imass = density*4*pi*(iRadius*1e-9)**3/3 # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
-ialpha_rAC = 0.5556
-ialpha_zAC = 0.2205
-ialpha_zDC = 0.4682
+ialpha_rAC = 0.5232
+ialpha_zAC = 0.5716
+ialpha_zDC = 0.5232
 
 iZ = 85 # No of elementry charges
 iOmega = 5 # RF Voltage frequencey kHz
