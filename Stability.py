@@ -65,14 +65,15 @@ ax.set_ylim(-0.5,0.5)
 ax.set_xlabel('$|q|$')
 ax.set_ylabel('$a$')
 # Set up initial excludion regions
+# This time we only have one because I am seperating each axis from the dot
 ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:orange',alpha=0.5,label='Radial Unstable')
 ExcludeR2 = ax.fill_between(q_axis,+mathieu_b(1,q_axis),  y2=+10,color='tab:orange',alpha=0.5)
-ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*(ialpha_zAC/ialpha_rAC)*(ir0**2/iz0**2))/2,y2=+10,color='tab:red',alpha=0.5,label='Axialy Unstable')
-ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*(ialpha_zAC/ialpha_rAC)*(ir0**2/iz0**2))/2,y2=-10,color='tab:red',alpha=0.5)
-# The point defining the trap in the parameter space
-point = ax.scatter(qr(iZ,ialpha_rAC,iVac,ir0,iOmega,iRadius),ar(iZ,ialpha_zDC,iVdc,iz0,iOmega,iRadius),color='b')
-charge_line, = ax.plot(q_axis,charges_func(ialpha_rAC, ialpha_zDC, iVac, iVdc, ir0, iz0, q_axis),color='g',label='Charges')
-    #qr(charges,ialpha_rAC,iVac,ir0,iOmega,iRadius),ar(charges,ialpha_zDC,iVdc,iz0,iOmega,iRadius),color='g',label='Charges')
+
+# The points defining the trap in the parameter space
+u_point = ax.scatter(qr(iZ,ialpha_rAC,iVac,ir0,iOmega,iRadius),ar(iZ,ialpha_zDC,iVdc,iz0,iOmega,iRadius),color='b')
+v_point = ax.scatter(qr(iZ,ialpha_rAC,iVac,ir0,iOmega,iRadius),ar(iZ,ialpha_zDC,iVdc,iz0,iOmega,iRadius),color='b')
+z_point = ax.scatter(qr(iZ,ialpha_rAC,iVac,ir0,iOmega,iRadius),ar(iZ,ialpha_zDC,iVdc,iz0,iOmega,iRadius),color='b')
+
 
 ax.legend()
 
