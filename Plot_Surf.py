@@ -59,15 +59,16 @@ vs = np.array([[float(x[0]),float(x[1])] for x in vdata])/1e3
 
 import matplotlib.pyplot as plt
 
-fig,ax = plt.subplots()
-levels = np.linspace(plot.min(),plot.max(),50)
-m=ax.contourf(xs/1e3,ys/1e3,plot,levels=levels)
-ax.contour(xs/1e3,ys/1e3,plot,2,colors='k',levels=levels)
-fig.colorbar(m)
+fig,ax = plt.subplots(subplot_kw={'projection':'3d'})
+#levels = np.linspace(plot.min(),plot.max(),50)
+#m=ax.contourf(xs/1e3,ys/1e3,plot,levels=levels)
+#ax.contour(xs/1e3,ys/1e3,plot,2,colors='k',levels=levels)
+#fig.colorbar(m)
+ax.plot_surface(XS/1e3,YS/1e3,plot,cmap='jet')
 
-ax.scatter(us[:,0],us[:,1],color='r',marker='x',label='u axis')
-ax.scatter(vs[:,0],vs[:,1],color='w',marker='x',label='v axis')
-ax.legend()
-ax.set(xlabel='x [mm]',ylabel='y [mm]')
+#ax.scatter(us[:,0],us[:,1],color='r',marker='x',label='u axis')
+#ax.scatter(vs[:,0],vs[:,1],color='w',marker='x',label='v axis')
+#ax.legend()
+ax.set(xlabel='x [mm]',ylabel='y [mm]',zlabel='$\\phi(x,y)$')
 #ax.set_xlim(-6,6)
 plt.show()
