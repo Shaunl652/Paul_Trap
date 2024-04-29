@@ -1,6 +1,6 @@
 simulate:
-	-rm TrapAC.u_axis.out
-	-rm TrapAC.v_axis.out
+	-rm TrapAC.x_axis.out
+	-rm TrapAC.y_axis.out
 	-rm TrapAC.z_axis.out
 	-rm TrapDC.z_axis.out
 	python3 geo_write.py
