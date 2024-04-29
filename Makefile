@@ -5,8 +5,8 @@ simulate:
 	-rm TrapDC.z_axis.out
 	python3 geo_write.py
 	python3 Axes_write.py
-	scuff-static < args_uAC
-	scuff-static < args_vAC
+	scuff-static < args_xAC
+	scuff-static < args_yAC
 	scuff-static < args_zAC
 	scuff-static < args_zDC
 	python3 Plot.py
