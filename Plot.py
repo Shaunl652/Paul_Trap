@@ -157,3 +157,5 @@ print(f'alpha_z^DC = {abs(alpha_zDC):.4f}')
 
 alpha_rAC = alpha_xAC+alpha_yAC/2
 print(f'alpha_r^AC = {alpha_rAC:.4f}')
+
+plt.show()
