@@ -21,34 +21,34 @@ q_axis = np.linspace(0,1.5 ,1001)
 
 # Initial Parameters
 
-iRadius = 150 # Particle radius m
-density = 2000 # particle density kg/m^3
-imass = density*4*pi*(iRadius*1e-9)**3/3 # mass kg
+iRadius = 20 # Particle radius um
+density = 1000 # particle density kg/m^3
+#imass = density*4*pi*(iRadius*1e-6)**3/3 # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
 ialpha_rAC = 0.5232
 ialpha_zAC = 0.5716
 ialpha_zDC = 0.5232
 
-iZ = 85 # No of elementry charges
+iZ = 1997 # No of elementry charges
 iOmega = 5 # RF Voltage frequencey kHz
-ir0 = 3.75 # distacne to pole from trap centre in mm
-iz0 = 7.0 # distance to end caps from trap centre mm
-iVac = 5000 # RF voltage V
-iVdc = 300 # DC volatage V
+ir0 = 8.0 # distacne to pole from trap centre in mm
+iz0 = 20.0 # distance to end caps from trap centre mm
+iVac = 1000 # RF voltage V
+iVdc = 100 # DC volatage V
 
 # Now start on the params q and a
 
 def ar(Z,alpha,V,x,Omega,Radius):
     # value of the a parameter
-    mass = density*4*pi*(Radius*1e-9)**3/3
+    mass = density*4*pi*(Radius*1e-6)**3/3
     return ((-4*Z*e)/(mass*(2*pi*Omega*1e3)**2)) *alpha *(V/(x*1e-3)**2)
 
 
 def qr(Z,alpha,V,x,Omega,Radius):
     # Magnitude of q parameter
-    mass = density*4*pi*(Radius*1e-9)**3/3
-    return ((4*Z*e)/(mass*(2*pi*Omega*1e3)**2)) *alpha *(V/(x*1e-3)**2)
+    mass = density*4*pi*(Radius*1e-6)**3/3
+    return abs(((4*Z*e)/(mass*(2*pi*Omega*1e3)**2)) *alpha *(V/(x*1e-3)**2))
 
 charges = np.linspace(0,500,1001)
 
@@ -130,8 +130,8 @@ axZ= fig.add_axes([0.65, 0.6, 0.3, 0.03])
 Z_slider = Slider(
     ax=axZ,
     label='$Z$',
-    valmin=3,
-    valmax=300,
+    valmin=100,
+    valmax=+3000,
     valstep=1,
     valinit=iZ
 )
@@ -168,9 +168,9 @@ z0_slider = Slider(
 axRad = fig.add_axes([0.65, 0.40, 0.3, 0.03])
 Rad_slider = Slider(
     ax=axRad,
-    label='$R$ [nm]',
-    valmin=100,
-    valmax=1000,
+    label='$R$ [$\\mu$m]',
+    valmin=10,
+    valmax=30,
     valinit=iRadius
 )
 
