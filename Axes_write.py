@@ -20,9 +20,9 @@ y0 = float(vals[1])*1e3
 z0 = float(vals[2])*1e3
 
 # Measurment locations
-xaxis = np.linspace(-x0,+x0,11)/2
-yaxis = np.linspace(-y0,+y0,11)/2
-zaxis = np.linspace(-z0,+z0,11)/2
+xaxis = np.linspace(-x0,+x0,11)/10
+yaxis = np.linspace(-y0,+y0,11)/10
+zaxis = np.linspace(-z0,+z0,11)/10
 
 with open('x_axis.dat','w') as f:
     for x,y in zip(xaxis,yaxis):
