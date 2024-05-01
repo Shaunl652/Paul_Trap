@@ -26,13 +26,13 @@ density = 2000 # particle density kg/m^3
 imass = density*4*pi*(iRadius*1e-9)**3/3 # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
-ialpha_rAC = 0.5232
-ialpha_zAC = 0.5716
-ialpha_zDC = 0.5232
+ialpha_rAC = 0.5849
+ialpha_zAC = 0.2056
+ialpha_zDC = 0.4330
 
 iZ = 85 # No of elementry charges
 iOmega = 5 # RF Voltage frequencey kHz
-ir0 = 3.75 # distacne to pole from trap centre in mm
+ir0 = 3.09 # distacne to pole from trap centre in mm
 iz0 = 7.0 # distance to end caps from trap centre mm
 iVac = 5000 # RF voltage V
 iVdc = 300 # DC volatage V
@@ -141,7 +141,7 @@ Omega_slider = Slider(
     ax=axOmega,
     label='$\\Omega$ [kHz]',
     #valstep=np.logspace(0,6,101),
-    valmin=5,
+    valmin=0.5,
     valmax=20,
     valinit=iOmega
 )
@@ -161,7 +161,7 @@ z0_slider = Slider(
     ax=axz0,
     label='$z_0$ [mm]',
     valmin=1.,
-    valmax=20,
+    valmax=50,
     valinit=iz0
 )
 # Slider for particle radius
