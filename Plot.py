@@ -96,7 +96,8 @@ ax.legend(loc='upper right')
 alpha_yAC = vals[0]*r0**2
 print(f'alpha_y^AC = {abs(alpha_yAC):.4f}')
 print('--------------------------------------------------')
-
+alpha_rAC = alpha_xAC+alpha_yAC/2
+print(f'alpha_r^AC = {alpha_rAC:.4f}')
 
 # =============================================================================
 # Now we move onto alpha_z^AC
@@ -155,5 +156,4 @@ ax.legend(loc='upper right')
 alpha_zDC = vals[0]*z0**2
 print(f'alpha_z^DC = {abs(alpha_zDC):.4f}')
 
-alpha_rAC = alpha_xAC+alpha_yAC/2
-print(f'alpha_r^AC = {alpha_rAC:.4f}')
+
