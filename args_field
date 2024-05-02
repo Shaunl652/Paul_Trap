@@ -1,3 +1,3 @@
 geometry       TrapDC.scuffgeo
-EPFile         z_axis.dat
+EPFile         field_axis.dat
 excitationfile VDC.Excitations
