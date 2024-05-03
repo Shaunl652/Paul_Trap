@@ -23,7 +23,7 @@ r0 = float(vals[0])*1e3
 z0 = float(vals[1])*1e3
 
 # Distance from surface of the rod to its centre
-rod_rad = 0.15e3#0.635e3
+rod_rad = 100/2 #0.15e3#0.635e3
 ECP_thick = 0.1e3
 
 with open('TrapAC.scuffgeo','w') as f:
