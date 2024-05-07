@@ -26,15 +26,15 @@ density = 2000 # particle density kg/m^3
 imass = density*4*pi*(iRadius*1e-9)**3/3 # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
-ialpha_rAC = 0.5849
-ialpha_zAC = 0.2056
-ialpha_zDC = 0.4330
+ialpha_rAC = 0.4262
+ialpha_zAC = 0.0243
+ialpha_zDC = 0.0111
 
 iZ = 85 # No of elementry charges
 iOmega = 5 # RF Voltage frequencey kHz
-ir0 = 3.09 # distacne to pole from trap centre in mm
-iz0 = 7.0 # distance to end caps from trap centre mm
-iVac = 5000 # RF voltage V
+ir0 = 1.0 # distacne to pole from trap centre in mm
+iz0 = 20 # distance to end caps from trap centre mm
+iVac = 300 # RF voltage V
 iVdc = 300 # DC volatage V
 
 # Now start on the params q and a
