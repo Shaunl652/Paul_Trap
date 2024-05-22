@@ -30,7 +30,7 @@ ialpha_rAC = 0.4262
 ialpha_zAC = 0.0243
 ialpha_zDC = 0.0111
 
-iZ = 85 # No of elementry charges
+iZ = 0.5 # charge to mass ratio
 iOmega = 5 # RF Voltage frequencey kHz
 ir0 = 1.0 # distacne to pole from trap centre in mm
 iz0 = 20 # distance to end caps from trap centre mm
@@ -39,16 +39,16 @@ iVdc = 300 # DC volatage V
 
 # Now start on the params q and a
 
-def ar(Z,alpha,V,x,Omega,Radius):
+def ar(Z,alpha,V,x,Omega):
     # value of the a parameter
-    mass = density*4*pi*(Radius*1e-9)**3/3
-    return ((-4*Z*e)/(mass*(2*pi*Omega*1e3)**2)) *alpha *(V/(x*1e-3)**2)
+    #mass = density*4*pi*(Radius*1e-9)**3/3
+    return ((-4*Z)/((2*pi*Omega*1e3)**2)) *alpha *(V/(x*1e-3)**2)
 
 
-def qr(Z,alpha,V,x,Omega,Radius):
+def qr(Z,alpha,V,x,Omega):
     # Magnitude of q parameter
-    mass = density*4*pi*(Radius*1e-9)**3/3
-    return ((4*Z*e)/(mass*(2*pi*Omega*1e3)**2)) *alpha *(V/(x*1e-3)**2)
+    #mass = density*4*pi*(Radius*1e-9)**3/3
+    return ((4*Z)/((2*pi*Omega*1e3)**2)) *alpha *(V/(x*1e-3)**2)
 
 charges = np.linspace(0,500,1001)
 
@@ -70,7 +70,7 @@ ExcludeR2 = ax.fill_between(q_axis,+mathieu_b(1,q_axis),  y2=+10,color='tab:oran
 ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*(ialpha_zAC/ialpha_rAC)*(ir0**2/iz0**2))/2,y2=+10,color='tab:red',alpha=0.5,label='Axialy Unstable')
 ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*(ialpha_zAC/ialpha_rAC)*(ir0**2/iz0**2))/2,y2=-10,color='tab:red',alpha=0.5)
 # The point defining the trap in the parameter space
-point = ax.scatter(qr(iZ,ialpha_rAC,iVac,ir0,iOmega,iRadius),ar(iZ,ialpha_zDC,iVdc,iz0,iOmega,iRadius),color='b')
+point = ax.scatter(qr(iZ,ialpha_rAC,iVac,ir0,iOmega),ar(iZ,ialpha_zDC,iVdc,iz0,iOmega),color='b')
 charge_line, = ax.plot(q_axis,charges_func(ialpha_rAC, ialpha_zDC, iVac, iVdc, ir0, iz0, q_axis),color='g',label='Charges')
     #qr(charges,ialpha_rAC,iVac,ir0,iOmega,iRadius),ar(charges,ialpha_zDC,iVdc,iz0,iOmega,iRadius),color='g',label='Charges')
 
@@ -125,14 +125,13 @@ azDC_slider = Slider(
     valmax=1,
     valinit=ialpha_zDC
 )
-# Slider for charge number
+# Slider for charge to mass ratio 
 axZ= fig.add_axes([0.65, 0.6, 0.3, 0.03])
 Z_slider = Slider(
     ax=axZ,
-    label='$Z$',
-    valmin=3,
-    valmax=300,
-    valstep=1,
+    label='$Z/m$ [C/kg]',
+    valmin=0.01,
+    valmax=10,
     valinit=iZ
 )
 # Slider for Omega
@@ -164,16 +163,18 @@ z0_slider = Slider(
     valmax=50,
     valinit=iz0
 )
-# Slider for particle radius
-axRad = fig.add_axes([0.65, 0.40, 0.3, 0.03])
-Rad_slider = Slider(
-    ax=axRad,
-    label='$R$ [nm]',
-    valmin=100,
-    valmax=1000,
-    valinit=iRadius
-)
-
+# =============================================================================
+# # Slider for particle radius
+# axRad = fig.add_axes([0.65, 0.40, 0.3, 0.03])
+# Rad_slider = Slider(
+#     ax=axRad,
+#     label='$R$ [nm]',
+#     valmin=100,
+#     valmax=1000,
+#     valinit=iRadius
+# )
+# 
+# =============================================================================
 
 # The function to be called anytime a slider's value changes
 def update(val):
@@ -185,12 +186,12 @@ def update(val):
     alpha_zDC = azDC_slider.val
     Z = Z_slider.val
     Omega = Omega_slider.val
-    Radius = Rad_slider.val
+    #Radius = Rad_slider.val
     r0 = r0_slider.val
     z0 = z0_slider.val
     
     # Updates the point
-    point.set_offsets([qr(Z,alpha_rAC,Vac,r0,Omega,Radius),ar(Z,alpha_zDC,Vdc,z0,Omega,Radius)])
+    point.set_offsets([qr(Z,alpha_rAC,Vac,r0,Omega),ar(Z,alpha_zDC,Vdc,z0,Omega)])
     charge_line.set_ydata(charges_func(alpha_rAC, alpha_zDC, Vac, Vdc, r0, z0, q_axis))
 
     # Updatest eh exclusion regions
@@ -219,7 +220,7 @@ Z_slider.on_changed(update)
 Omega_slider.on_changed(update)
 r0_slider.on_changed(update)
 z0_slider.on_changed(update)
-Rad_slider.on_changed(update)
+#Rad_slider.on_changed(update)
 
 # Create a `matplotlib.widgets.Button` to reset the sliders to initial values.
 resetax = fig.add_axes([0.8, 0.025, 0.1, 0.04])
@@ -236,7 +237,7 @@ def reset(event):
     Omega_slider.reset()
     r0_slider.reset()
     z0_slider.reset()
-    Rad_slider.reset()
+    #Rad_slider.reset()
 button.on_clicked(reset)
 
 plt.show()
