@@ -30,7 +30,7 @@ ialpha_rAC = 0.5482
 ialpha_zAC = 0.2209
 ialpha_zDC = 0.4769
 
-iZ = 9.85e-6 # charge to mass ratio
+iZ = 0.5#9.85e-6 # charge to mass ratio
 iOmega = 45 # RF Voltage frequencey kHz
 ir0 = 4 # distacne to pole from trap centre in mm
 iz0 = 7 # distance to end caps from trap centre mm
@@ -42,13 +42,13 @@ iVdc = 300 # DC volatage V
 def ar(Z,alpha,V,x,Omega):
     # value of the a parameter
     #mass = density*4*pi*(Radius*1e-9)**3/3
-    return ((-4*Z)/((2*pi*Omega)**2)) *alpha *(V/(x*1e-3)**2)
+    return ((-4*Z)/((2*pi*Omega*1e3)**2)) *alpha *(V/(x*1e-3)**2)
 
 
 def qr(Z,alpha,V,x,Omega):
     # Magnitude of q parameter
     #mass = density*4*pi*(Radius*1e-9)**3/3
-    return ((4*Z)/((2*pi*Omega)**2)) *alpha *(V/(x*1e-3)**2)
+    return ((4*Z)/((2*pi*Omega*1e3)**2)) *alpha *(V/(x*1e-3)**2)
 
 charges = np.linspace(0,500,1001)
 
@@ -144,7 +144,7 @@ Z_slider = Slider(
     ax=axZ,
     label='$Z/m$ [C/kg]',
     valmin=1e-6,
-    valmax=1e-4,
+    valmax=1,
     valinit=iZ,
     valfmt='%0.2e'
 )
@@ -152,9 +152,9 @@ Z_slider = Slider(
 axOmega= fig.add_axes([0.65, 0.55, 0.3, 0.03])
 Omega_slider = Slider(
     ax=axOmega,
-    label='$\\Omega$ [Hz]',
+    label='$\\Omega$ [kHz]',
     #valstep=np.logspace(0,6,101),
-    valmin=1,
+    valmin=0.5,
     valmax=100,
     valinit=iOmega
 )
