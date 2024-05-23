@@ -31,7 +31,7 @@ ialpha_zAC = 0.2209
 ialpha_zDC = 0.4769
 
 iZ = 9.85e-6 # charge to mass ratio
-iOmega = 5 # RF Voltage frequencey kHz
+iOmega = 45 # RF Voltage frequencey kHz
 ir0 = 4 # distacne to pole from trap centre in mm
 iz0 = 7 # distance to end caps from trap centre mm
 iVac = 300 # RF voltage V
@@ -55,6 +55,16 @@ charges = np.linspace(0,500,1001)
 def charges_func(alpha_r,alpha_z,Vac,Vdc,r0,z0,q):
     return -q*r0**2*alpha_z*Vdc/(alpha_r*Vac*z0**2)
 
+def r_accel(Qm,alpha_z,alpha_r,Vdc,Vac,z0,r0):
+    Qz = (alpha_z*Vdc)/(z0*1e-3)**2
+    Qr = (alpha_r*Vac)/(r0*1e-3)**2
+    return Qm*np.sqrt(2)*r0*1e-3*((Qz-Qr)+(Qz+Qr))
+
+def z_accel(Qm,alpha_ac,alpha_dc,Vdc,Vac,z0):
+    Qac = (alpha_ac*Vdc)/(z0*1e-3)**2
+    Qdc = (alpha_dc*Vac)/(z0*1e-3)**2
+    return 2*Qm*(Qdc+Qac)*z0*1e-3
+
 from matplotlib.widgets import Button, Slider
 
 # Create the figure 
@@ -73,7 +83,10 @@ ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*(ialpha_zAC/ialpha_rAC)*(
 point = ax.scatter(qr(iZ,ialpha_rAC,iVac,ir0,iOmega),ar(iZ,ialpha_zDC,iVdc,iz0,iOmega),color='b')
 charge_line, = ax.plot(q_axis,charges_func(ialpha_rAC, ialpha_zDC, iVac, iVdc, ir0, iz0, q_axis),color='g',label='Charges')
     #qr(charges,ialpha_rAC,iVac,ir0,iOmega,iRadius),ar(charges,ialpha_zDC,iVdc,iz0,iOmega,iRadius),color='g',label='Charges')
-
+a_r = r_accel(iZ, ialpha_zDC, ialpha_rAC, iVdc, iVac, iz0, ir0)
+a_z = z_accel(iZ, ialpha_zAC, ialpha_zDC, iVdc, iVac, iz0)
+r_text = plt.gcf().text(0.65,0.4,f'max $a_r = $ {a_r:.2e}',fontsize=14)
+z_text = plt.gcf().text(0.65,0.3,f'max $a_z = $ {a_z:.2e}',fontsize=14)
 ax.legend()
 
 # adjust the main plot to make room for the sliders
@@ -132,7 +145,8 @@ Z_slider = Slider(
     label='$Z/m$ [C/kg]',
     valmin=1e-6,
     valmax=1e-4,
-    valinit=iZ
+    valinit=iZ,
+    valfmt='%0.2e'
 )
 # Slider for Omega
 axOmega= fig.add_axes([0.65, 0.55, 0.3, 0.03])
@@ -140,8 +154,8 @@ Omega_slider = Slider(
     ax=axOmega,
     label='$\\Omega$ [Hz]',
     #valstep=np.logspace(0,6,101),
-    valmin=0.5,
-    valmax=20,
+    valmin=1,
+    valmax=100,
     valinit=iOmega
 )
 
@@ -206,6 +220,11 @@ def update(val):
     ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*(alpha_zAC/alpha_rAC)*(r0**2/z0**2))/2,y2=+10,color='tab:red',alpha=0.5)
     ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*(alpha_zAC/alpha_rAC)*(r0**2/z0**2))/2,y2=-10,color='tab:red',alpha=0.5)
 
+    a_r = r_accel(Z, alpha_zDC, alpha_rAC, Vdc, Vac, z0, r0)
+    a_z = z_accel(Z, alpha_zAC, alpha_zDC, Vdc, Vac, z0)
+    r_text.set_text(f'$a_r = $ {a_r:.2e}')
+    z_text.set_text(f'$a_z = $ {a_z:.2e}')
+    
     # Redraw the plot
     fig.canvas.draw_idle()
 
