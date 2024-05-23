@@ -26,14 +26,14 @@ density = 2000 # particle density kg/m^3
 imass = density*4*pi*(iRadius*1e-9)**3/3 # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
-ialpha_rAC = 0.4262
-ialpha_zAC = 0.0243
-ialpha_zDC = 0.0111
+ialpha_rAC = 0.5482
+ialpha_zAC = 0.2209
+ialpha_zDC = 0.4769
 
-iZ = 0.5 # charge to mass ratio
+iZ = 9.85e-6 # charge to mass ratio
 iOmega = 5 # RF Voltage frequencey kHz
-ir0 = 1.0 # distacne to pole from trap centre in mm
-iz0 = 20 # distance to end caps from trap centre mm
+ir0 = 4 # distacne to pole from trap centre in mm
+iz0 = 7 # distance to end caps from trap centre mm
 iVac = 300 # RF voltage V
 iVdc = 300 # DC volatage V
 
@@ -42,13 +42,13 @@ iVdc = 300 # DC volatage V
 def ar(Z,alpha,V,x,Omega):
     # value of the a parameter
     #mass = density*4*pi*(Radius*1e-9)**3/3
-    return ((-4*Z)/((2*pi*Omega*1e3)**2)) *alpha *(V/(x*1e-3)**2)
+    return ((-4*Z)/((2*pi*Omega)**2)) *alpha *(V/(x*1e-3)**2)
 
 
 def qr(Z,alpha,V,x,Omega):
     # Magnitude of q parameter
     #mass = density*4*pi*(Radius*1e-9)**3/3
-    return ((4*Z)/((2*pi*Omega*1e3)**2)) *alpha *(V/(x*1e-3)**2)
+    return ((4*Z)/((2*pi*Omega)**2)) *alpha *(V/(x*1e-3)**2)
 
 charges = np.linspace(0,500,1001)
 
@@ -130,15 +130,15 @@ axZ= fig.add_axes([0.65, 0.6, 0.3, 0.03])
 Z_slider = Slider(
     ax=axZ,
     label='$Z/m$ [C/kg]',
-    valmin=0.01,
-    valmax=10,
+    valmin=1e-6,
+    valmax=1e-4,
     valinit=iZ
 )
 # Slider for Omega
 axOmega= fig.add_axes([0.65, 0.55, 0.3, 0.03])
 Omega_slider = Slider(
     ax=axOmega,
-    label='$\\Omega$ [kHz]',
+    label='$\\Omega$ [Hz]',
     #valstep=np.logspace(0,6,101),
     valmin=0.5,
     valmax=20,
