@@ -31,7 +31,7 @@ ialpha_zAC = 0.2209
 ialpha_zDC = 0.4769
 
 iZ = 0.5#9.85e-6 # charge to mass ratio
-iOmega = 45 # RF Voltage frequencey kHz
+iOmega = 0.8 # RF Voltage frequencey kHz
 ir0 = 4 # distacne to pole from trap centre in mm
 iz0 = 7 # distance to end caps from trap centre mm
 iVac = 300 # RF voltage V
@@ -154,8 +154,8 @@ Omega_slider = Slider(
     ax=axOmega,
     label='$\\Omega$ [kHz]',
     #valstep=np.logspace(0,6,101),
-    valmin=0.5,
-    valmax=100,
+    valmin=0.01,
+    valmax=1,
     valinit=iOmega
 )
 
