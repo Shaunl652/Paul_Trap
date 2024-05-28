@@ -22,8 +22,8 @@ with open('TrapAC.plane.out','r') as file:
 with open('dims.txt','r') as file:
 	rvals = [line for line in file if valid(line)]
     
-r0 = float(rvals[0])*1e3
-z0 = float(rvals[1])*1e3
+r0 = float(rvals[0])
+z0 = float(rvals[1])
 
 xs = np.linspace(-r0,+r0,101)
 ys = np.linspace(-r0,+r0,101)
@@ -52,7 +52,7 @@ fig,ax = plt.subplots(subplot_kw={'projection':'3d'})
 #m=ax.contourf(xs/1e3,ys/1e3,plot,levels=levels)
 #ax.contour(xs/1e3,ys/1e3,plot,2,colors='k',levels=levels)
 #fig.colorbar(m)
-ax.plot_surface(XS/1e3,YS/1e3,plot,cmap='jet',alpha=0.8)
+ax.plot_surface(XS,YS,plot,cmap='jet',alpha=0.8)
 
 ax.set(xlabel='x [mm]',ylabel='y [mm]',zlabel='$\\phi(x,y)$')
 #ax.set_xlim(-6,6)
@@ -61,6 +61,6 @@ plt.show()
 # And field lines
 fig,ax = plt.subplots()
 
-m = ax.streamplot(XS/1e3,YS/1e3,Ex,Ey,density=2,color=plot,cmap='hot')
+m = ax.streamplot(XS,YS,Ex,Ey,density=2,color=plot,cmap='hot')
 ax.set(xlabel='$x$ [mm]',ylabel='$y$ [mm]')
 fig.colorbar(m.lines,label='Potential [V]')

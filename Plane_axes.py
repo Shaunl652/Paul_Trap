@@ -19,8 +19,8 @@ def valid(line):
 with open('dims.txt','r') as file:
 	vals = [line for line in file if valid(line)]
     
-r0 = float(vals[0])*1e3
-z0 = float(vals[1])*1e3
+r0 = float(vals[0])
+z0 = float(vals[1])
 
 
 
