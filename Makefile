@@ -19,10 +19,12 @@ show:
 mesh:
 	gmsh Endcap_top.stl -2 -format msh2
 	gmsh Endcap_bottom.stl -2 -format msh2
-	gmsh Rod.stl -2 -format msh2
-	mmgs -hausd 500 Endcap_top.msh
-	mmgs -hausd 500 Endcap_bottom.msh
-	mmgs -hausd 30 Rod.msh
+	gmsh RF_Upper.stl -2 -format msh2
+	gmsh RF_Lower.stl -2 -format msh2
+	mmgs -hausd 0.1 Endcap_top.msh
+	mmgs -hausd 0.1 Endcap_bottom.msh
+	mmgs -hausd 0.1 RF_Upper.msh
+	mmgs -hausd 0.1 RF_Lower.msh
 
 Surface:
 	-rm TrapAC.plane.out
