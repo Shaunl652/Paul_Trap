@@ -55,6 +55,6 @@ with open('TrapDC.scuffgeo','w') as f:
     f.write('\n')
     f.write(f'OBJECT End_Cap_Top\n   MESHFILE Endcap_top.o.msh\n   DISPLACED 0 0 40\n   ROTATED 45 ABOUT 0 0 1\nENDOBJECT\n')
     f.write('\n')
-    f.write(f'OBJECT End_Cap_Bot\n   MESHFILE Endcap_bottom.o.msh\n   ROTATED 45 ABOUT 0 0 1\nENDOBJECT\n')
+    f.write(f'OBJECT End_Cap_Bot\n   MESHFILE Endcap_bottom.o.msh\n   DISPLACED 0 0 -12\n   ROTATED 45 ABOUT 0 0 1\nENDOBJECT\n')
     
     
