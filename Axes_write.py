@@ -22,7 +22,7 @@ z0 = float(vals[1])
 # Measurment locations
 xaxis = np.linspace(-r0,+r0,11)/10
 yaxis = np.linspace(-r0,+r0,11)/10
-zaxis = np.linspace(-z0,+z0,11)/10
+zaxis = np.linspace(-z0,+z0,11)
 
 with open('x_axis.dat','w') as f:
     for x in xaxis:
