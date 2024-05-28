@@ -89,7 +89,7 @@ ax.scatter(y_points,y_pot,marker='x',color='r',label='Simulation')
 
 vals, errs = curve_fit(f, y_points, y_pot)
 
-ax.plot(y_axis/1e-3,f(y_axis,vals[0],vals[1],vals[2]),label=f'Fit: $ay^2 + by + c$\n $a=$ {vals[0]:.1e}; $b=$ {vals[1]:.1e}; $c=$ {vals[2]:.1e}')
+ax.plot(y_axis,f(y_axis,vals[0],vals[1],vals[2]),label=f'Fit: $ay^2 + by + c$\n $a=$ {vals[0]:.1e}; $b=$ {vals[1]:.1e}; $c=$ {vals[2]:.1e}')
 ax.set(xlabel='$y$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to RF voltage')
 ax.legend(loc='upper right')
 
