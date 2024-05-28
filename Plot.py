@@ -27,8 +27,8 @@ with open('dims.txt','r') as file:
 	#lines=(line.strip() for line in file if valid(line))
 	dims = [line for line in file if valid(line)] 
 
-r0 = float(dims[0])*1e-3
-z0 = float(dims[1])*1e-3
+r0 = float(dims[0])
+z0 = float(dims[1])
 
 
 
@@ -42,7 +42,7 @@ with open('x_axis.dat','r') as file:
     lines = (line.strip() for line in file if valid(line))
     x_coords = np.array([extract(line) for line in lines])
     
-x_points = np.array([float(x) for x in x_coords[:,0]])*1e-6
+x_points = np.array([float(x) for x in x_coords[:,0]])
 x_axis = np.linspace(min(x_points),max(x_points),1001)
 
 with open('TrapAC.x_axis.out','r') as file:
@@ -53,11 +53,11 @@ x_pot = [float(phi) for phi in xACdata[:,4]]
 
 
 fig_xAC,ax = plt.subplots(figsize=(10,5))
-ax.scatter(x_points/1e-3,x_pot,marker='x',color='r',label='Simulation')
+ax.scatter(x_points,x_pot,marker='x',color='r',label='Simulation')
 
 vals, errs = curve_fit(f, x_points, x_pot)
 
-ax.plot(x_axis/1e-3,f(x_axis,vals[0],vals[1],vals[2]),label=f'Fit: $ax^2 + bx + c$\n $a=$ {vals[0]:.1e}; $b=$ {vals[1]:.1e}; $c=$ {vals[2]:.1e}')
+ax.plot(x_axis,f(x_axis,vals[0],vals[1],vals[2]),label=f'Fit: $ax^2 + bx + c$\n $a=$ {vals[0]:.1e}; $b=$ {vals[1]:.1e}; $c=$ {vals[2]:.1e}')
 ax.set(xlabel='$x$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to RF voltage')
 ax.legend(loc='upper right')
 
@@ -74,7 +74,7 @@ with open('y_axis.dat','r') as file:
     lines = (line.strip() for line in file if valid(line))
     y_coords = np.array([extract(line) for line in lines])
     
-y_points = np.array([float(y) for y in y_coords[:,1]])*1e-6
+y_points = np.array([float(y) for y in y_coords[:,1]])
 y_axis = np.linspace(min(y_points),max(y_points),1001)
 
 with open('TrapAC.y_axis.out','r') as file:
@@ -85,7 +85,7 @@ y_pot = [float(phi) for phi in yACdata[:,4]]
 
 
 fig_yAC,ax = plt.subplots(figsize=(10,5))
-ax.scatter(y_points/1e-3,y_pot,marker='x',color='r',label='Simulation')
+ax.scatter(y_points,y_pot,marker='x',color='r',label='Simulation')
 
 vals, errs = curve_fit(f, y_points, y_pot)
 
@@ -107,7 +107,7 @@ with open('z_axis.dat','r') as file:
     lines = (line.strip() for line in file if valid(line))
     z_coords = np.array([extract(line) for line in lines])
     
-z_points = np.array([float(z) for z in z_coords[:,2]])*1e-6
+z_points = np.array([float(z) for z in z_coords[:,2]])
 z_axis = np.linspace(min(z_points),max(z_points),1001)
 
 with open('TrapAC.z_axis.out','r') as file:
@@ -118,11 +118,11 @@ zAC_pot = [float(phi) for phi in data[:,4]]
 
 
 fig_zAC,ax = plt.subplots(figsize=(10,5))
-ax.scatter(z_points/1e-3,zAC_pot,marker='x',color='r',label='Simulation')
+ax.scatter(z_points,zAC_pot,marker='x',color='r',label='Simulation')
 
 vals, errs = curve_fit(f, z_points, zAC_pot)
 
-ax.plot(z_axis/1e-3,f(z_axis,vals[0],vals[1],vals[2]),label=f'Fit: $az^2 + bz + c$\n $a=$ {vals[0]:.1e}; $b=$ {vals[1]:.1e}; $c=$ {vals[2]:.1e}')
+ax.plot(z_axis,f(z_axis,vals[0],vals[1],vals[2]),label=f'Fit: $az^2 + bz + c$\n $a=$ {vals[0]:.1e}; $b=$ {vals[1]:.1e}; $c=$ {vals[2]:.1e}')
 ax.set(xlabel='$z$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to RF voltage')
 ax.legend(loc='upper right')
 
@@ -145,11 +145,11 @@ zDC_pot = [float(phi) for phi in data[:,4]]
 
 
 fig_zDC,ax = plt.subplots(figsize=(10,5))
-ax.scatter(z_points/1e-3,zDC_pot,marker='x',color='r',label='Simulation')
+ax.scatter(z_points,zDC_pot,marker='x',color='r',label='Simulation')
 
 vals, errs = curve_fit(f, z_points, zDC_pot)
 
-ax.plot(z_axis/1e-3,f(z_axis,vals[0],vals[1],vals[2]),label=f'Fit: $ax^2 + bx + c$\n $a=$ {vals[0]:.1e}; $b=$ {vals[1]:.1e}; $c=$ {vals[2]:.1e}')
+ax.plot(z_axis,f(z_axis,vals[0],vals[1],vals[2]),label=f'Fit: $ax^2 + bx + c$\n $a=$ {vals[0]:.1e}; $b=$ {vals[1]:.1e}; $c=$ {vals[2]:.1e}')
 ax.set(xlabel='$z$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to end caps')
 ax.legend(loc='upper right')
 
