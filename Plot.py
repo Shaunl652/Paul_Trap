@@ -55,13 +55,13 @@ x_pot = [float(phi) for phi in xACdata[:,4]]
 fig_xAC,ax = plt.subplots(figsize=(10,5))
 ax.scatter(x_points,x_pot,marker='x',color='r',label='Simulation')
 
-vals, errs = curve_fit(f, x_points, x_pot)
+xAC_vals, errs = curve_fit(f, x_points, x_pot)
 
-ax.plot(x_axis,f(x_axis,vals[0],vals[1],vals[2]),label=f'Fit: $ax^2 + bx + c$\n $a=$ {vals[0]:.1e}; $b=$ {vals[1]:.1e}; $c=$ {vals[2]:.1e}')
+ax.plot(x_axis,f(x_axis,xAC_vals[0],xAC_vals[1],xAC_vals[2]),label=f'Fit: $ax^2 + bx + c$\n $a=$ {xAC_vals[0]:.1e}; $b=$ {xAC_vals[1]:.1e}; $c=$ {xAC_vals[2]:.1e}')
 ax.set(xlabel='$x$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to RF voltage')
 ax.legend(loc='upper right')
 
-alpha_xAC = -vals[0]*r0**2
+alpha_xAC = xAC_vals[0]*r0**2
 print(f'alpha_x^AC = {abs(alpha_xAC):.4f}')
  
 
@@ -87,16 +87,16 @@ y_pot = [float(phi) for phi in yACdata[:,4]]
 fig_yAC,ax = plt.subplots(figsize=(10,5))
 ax.scatter(y_points,y_pot,marker='x',color='r',label='Simulation')
 
-vals, errs = curve_fit(f, y_points, y_pot)
+yAC_vals, errs = curve_fit(f, y_points, y_pot)
 
-ax.plot(y_axis,f(y_axis,vals[0],vals[1],vals[2]),label=f'Fit: $ay^2 + by + c$\n $a=$ {vals[0]:.1e}; $b=$ {vals[1]:.1e}; $c=$ {vals[2]:.1e}')
+ax.plot(y_axis,f(y_axis,yAC_vals[0],yAC_vals[1],yAC_vals[2]),label=f'Fit: $ay^2 + by + c$\n $a=$ {yAC_vals[0]:.1e}; $b=$ {yAC_vals[1]:.1e}; $c=$ {yAC_vals[2]:.1e}')
 ax.set(xlabel='$y$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to RF voltage')
 ax.legend(loc='upper right')
 
-alpha_yAC = vals[0]*r0**2
+alpha_yAC = yAC_vals[0]*r0**2
 print(f'alpha_y^AC = {abs(alpha_yAC):.4f}')
 print('--------------------------------------------------')
-alpha_rAC = alpha_xAC+alpha_yAC/2
+alpha_rAC = (abs(alpha_xAC)+abs(alpha_yAC))/2
 print(f'alpha_r^AC = {alpha_rAC:.4f}')
 
 # =============================================================================
@@ -120,13 +120,13 @@ zAC_pot = [float(phi) for phi in data[:,4]]
 fig_zAC,ax = plt.subplots(figsize=(10,5))
 ax.scatter(z_points,zAC_pot,marker='x',color='r',label='Simulation')
 
-vals, errs = curve_fit(f, z_points, zAC_pot)
+zAC_vals, errs = curve_fit(f, z_points, zAC_pot)
 
-ax.plot(z_axis,f(z_axis,vals[0],vals[1],vals[2]),label=f'Fit: $az^2 + bz + c$\n $a=$ {vals[0]:.1e}; $b=$ {vals[1]:.1e}; $c=$ {vals[2]:.1e}')
+ax.plot(z_axis,f(z_axis,zAC_vals[0],zAC_vals[1],zAC_vals[2]),label=f'Fit: $az^2 + bz + c$\n $a=$ {zAC_vals[0]:.1e}; $b=$ {zAC_vals[1]:.1e}; $c=$ {zAC_vals[2]:.1e}')
 ax.set(xlabel='$z$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to RF voltage')
 ax.legend(loc='upper right')
 
-alpha_zAC = vals[0]*z0**2
+alpha_zAC = zAC_vals[0]*z0**2
 print(f'alpha_z^AC = {abs(alpha_zAC):.4f}')
 
 
@@ -147,13 +147,13 @@ zDC_pot = [float(phi) for phi in data[:,4]]
 fig_zDC,ax = plt.subplots(figsize=(10,5))
 ax.scatter(z_points,zDC_pot,marker='x',color='r',label='Simulation')
 
-vals, errs = curve_fit(f, z_points, zDC_pot)
+zDC_vals, errs = curve_fit(f, z_points, zDC_pot)
 
-ax.plot(z_axis,f(z_axis,vals[0],vals[1],vals[2]),label=f'Fit: $ax^2 + bx + c$\n $a=$ {vals[0]:.1e}; $b=$ {vals[1]:.1e}; $c=$ {vals[2]:.1e}')
+ax.plot(z_axis,f(z_axis,zDC_vals[0],zDC_vals[1],zDC_vals[2]),label=f'Fit: $ax^2 + bx + c$\n $a=$ {zDC_vals[0]:.1e}; $b=$ {zDC_vals[1]:.1e}; $c=$ {zDC_vals[2]:.1e}')
 ax.set(xlabel='$z$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to end caps')
 ax.legend(loc='upper right')
 
-alpha_zDC = vals[0]*z0**2
+alpha_zDC = zDC_vals[0]*z0**2
 print(f'alpha_z^DC = {abs(alpha_zDC):.4f}')
 
 
