@@ -24,9 +24,9 @@ z0 = float(vals[1])*1e3
 
 
 
-xs = np.linspace(-r0,+r0,101)/10
-ys = np.linspace(-r0,+r0,101)/10
-zs = np.linspace(-z0,+z0,101)/10
+xs = np.linspace(-r0,+r0,101)
+ys = np.linspace(-r0,+r0,101)
+zs = np.linspace(-z0,+z0,101)
 
 XS,YS = np.meshgrid(xs,ys)
 
