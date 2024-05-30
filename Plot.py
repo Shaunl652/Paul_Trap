@@ -53,7 +53,7 @@ x_pot = [float(phi) for phi in xACdata[:,4]]
 
 
 fig_xAC,ax = plt.subplots(figsize=(10,5))
-ax.scatter(x_points,x_pot,marker='x',color='r',label='Simulation')
+ax.scatter(x_points,x_pot,marker='x',color='r',label='Simulation $x$ axis')
 
 xAC_vals, errs = curve_fit(f, x_points, x_pot)
 
@@ -84,13 +84,13 @@ with open('TrapAC.y_axis.out','r') as file:
 y_pot = [float(phi) for phi in yACdata[:,4]]
 
 
-fig_yAC,ax = plt.subplots(figsize=(10,5))
-ax.scatter(y_points,y_pot,marker='x',color='r',label='Simulation')
+#fig_yAC,ax = plt.subplots(figsize=(10,5))
+ax.scatter(y_points,y_pot,marker='x',color='b',label='Simulation $y$ axis')
 
 yAC_vals, errs = curve_fit(f, y_points, y_pot)
 
 ax.plot(y_axis,f(y_axis,yAC_vals[0],yAC_vals[1],yAC_vals[2]),label=f'Fit: $ay^2 + by + c$\n $a=$ {yAC_vals[0]:.1e}; $b=$ {yAC_vals[1]:.1e}; $c=$ {yAC_vals[2]:.1e}')
-ax.set(xlabel='$y$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to RF voltage')
+ax.set(xlabel='Distance from Trap centre [mm]',ylabel='$\\phi$ [V]',title='Potential due to RF voltage')
 ax.legend(loc='upper right')
 
 alpha_yAC = yAC_vals[0]*r0**2
