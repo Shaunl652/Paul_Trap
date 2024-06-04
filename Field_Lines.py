@@ -61,6 +61,6 @@ plt.show()
 # And field lines
 fig,ax = plt.subplots()
 
-m = ax.streamplot(XS,YS,Ex,Ey,density=2,color=plot,cmap='hot')
+m = ax.streamplot(XS,YS,Ex,Ey,density=2,color=plot,cmap='jet')
 ax.set(xlabel='$x$ [mm]',ylabel='$y$ [mm]')
 fig.colorbar(m.lines,label='Potential [V]')
