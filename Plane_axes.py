@@ -26,11 +26,12 @@ z0 = float(vals[1])
 
 xs = np.linspace(-r0,+r0,101)
 ys = np.linspace(-r0,+r0,101)
-zs = np.linspace(-z0,+z0,101)
+zs = np.linspace(-9,+9,11)
 
 XS,YS = np.meshgrid(xs,ys)
 
 with open('plane.dat','w') as file:
-    for x in xs:
-        for y in ys:
-            file.write(f'{x} {y} 0\n')
+    for z in zs:
+        for x in xs:
+            for y in ys:
+                file.write(f'{x} {y} {z}\n')

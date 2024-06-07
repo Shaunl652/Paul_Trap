@@ -1,4 +1,3 @@
 geometry TrapAC.scuffgeo
 EPFile   plane.dat
 excitationfile VAC.Excitations
-FVMesh t1.msh

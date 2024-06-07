@@ -3,3 +3,5 @@
 *.dat
 *.log
 *.out
+Figs/*
+

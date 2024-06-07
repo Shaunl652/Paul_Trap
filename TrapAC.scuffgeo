@@ -25,3 +25,13 @@ OBJECT Rod4
    ENDOBJECT
 
 
+OBJECT End_Cap_Top
+   MESHFILE Endcap_top.o.msh
+   DISPLACED 0 0 33
+ENDOBJECT
+
+OBJECT End_Cap_Bot
+   MESHFILE Endcap_bottom.o.msh
+   DISPLACED 0 0 -12
+   ROTATED 45 ABOUT 0 0 1
+ENDOBJECT
