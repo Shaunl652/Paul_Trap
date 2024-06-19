@@ -21,7 +21,7 @@ VDC = 130
 r0 = 0.9e-3
 z0 = 1.4e-3
 
-R = 150e-9
+R = 154e-9
 density = 2000 # particle density kg/m^3
 mass = (4/3)*density*pi*R**3
 

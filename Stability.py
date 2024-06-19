@@ -81,7 +81,7 @@ ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*(ialpha_zAC/ialpha_rAC)*(
 ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*(ialpha_zAC/ialpha_rAC)*(ir0**2/iz0**2))/2,y2=-10,color='tab:red',alpha=0.5)
 # The point defining the trap in the parameter space
 point = ax.scatter(qr(iZ,ialpha_rAC,iVac,ir0,iOmega),ar(iZ,ialpha_zDC,iVdc,iz0,iOmega),color='b')
-#charge_line, = ax.plot(q_axis,charges_func(ialpha_rAC, ialpha_zDC, iVac, iVdc, ir0, iz0, q_axis),color='g',label='Charges')
+charge_line, = ax.plot(q_axis,charges_func(ialpha_rAC, ialpha_zDC, iVac, iVdc, ir0, iz0, q_axis),color='g',label='Charges')
     #qr(charges,ialpha_rAC,iVac,ir0,iOmega,iRadius),ar(charges,ialpha_zDC,iVdc,iz0,iOmega,iRadius),color='g',label='Charges')
 a_r = r_accel(iZ, ialpha_zDC, ialpha_rAC, iVdc, iVac, iz0, ir0)
 a_z = z_accel(iZ, ialpha_zAC, ialpha_zDC, iVdc, iVac, iz0)
@@ -206,7 +206,7 @@ def update(val):
     
     # Updates the point
     point.set_offsets([qr(Z,alpha_rAC,Vac,r0,Omega),ar(Z,alpha_zDC,Vdc,z0,Omega)])
-   # charge_line.set_ydata(charges_func(alpha_rAC, alpha_zDC, Vac, Vdc, r0, z0, q_axis))
+    charge_line.set_ydata(charges_func(alpha_rAC, alpha_zDC, Vac, Vdc, r0, z0, q_axis))
 
     # Updatest eh exclusion regions
     global ExcludeR1,ExcludeR2,ExcludeZ1,ExcludeZ2
