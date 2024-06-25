@@ -103,14 +103,14 @@ print(f'alpha_r^AC = {alpha_rAC:.4f}')
 # Now we move onto alpha_z^AC
 # =============================================================================
 
-with open('z_axis.dat','r') as file:
+with open('zAC_axis.dat','r') as file:
     lines = (line.strip() for line in file if valid(line))
-    z_coords = np.array([extract(line) for line in lines])
+    zAC_coords = np.array([extract(line) for line in lines])
     
-z_points = np.array([float(z) for z in z_coords[:,2]])
-z_axis = np.linspace(min(z_points),max(z_points),1001)
+zAC_points = np.array([float(z) for z in zAC_coords[:,2]])
+zAC_axis = np.linspace(min(zAC_points),max(zAC_points),1001)
 
-with open('TrapAC.z_axis.out','r') as file:
+with open('TrapAC.zAC_axis.out','r') as file:
     lines = (line.strip() for line in file if valid(line))
     data = np.array([extract(line) for line in lines])
     
@@ -118,11 +118,11 @@ zAC_pot = [float(phi) for phi in data[:,4]]
 
 
 fig_zAC,ax = plt.subplots(figsize=(10,5))
-ax.scatter(z_points,zAC_pot,marker='x',color='r',label='Simulation')
+ax.scatter(zAC_points,zAC_pot,marker='x',color='r',label='Simulation')
 
-zAC_vals, errs = curve_fit(f, z_points, zAC_pot)
+zAC_vals, errs = curve_fit(f, zAC_points, zAC_pot)
 
-ax.plot(z_axis,f(z_axis,zAC_vals[0],zAC_vals[1],zAC_vals[2]),label=f'Fit: $az^2 + bz + c$\n $a=$ {zAC_vals[0]:.1e}; $b=$ {zAC_vals[1]:.1e}; $c=$ {zAC_vals[2]:.1e}')
+ax.plot(zAC_axis,f(zAC_axis,zAC_vals[0],zAC_vals[1],zAC_vals[2]),label=f'Fit: $az^2 + bz + c$\n $a=$ {zAC_vals[0]:.1e}; $b=$ {zAC_vals[1]:.1e}; $c=$ {zAC_vals[2]:.1e}')
 ax.set(xlabel='$z$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to RF voltage')
 ax.legend(loc='upper right')
 
@@ -137,7 +137,14 @@ print(f'alpha_z^AC = {abs(alpha_zAC):.4f}')
 
 # Car reuse the z coords ect
 
-with open('TrapDC.z_axis.out','r') as file:
+with open('zDC_axis.dat','r') as file:
+    lines = (line.strip() for line in file if valid(line))
+    zDC_coords = np.array([extract(line) for line in lines])
+    
+zDC_points = np.array([float(z) for z in zDC_coords[:,2]])
+zDC_axis = np.linspace(min(zDC_points),max(zDC_points),1001)
+
+with open('TrapDC.zDC_axis.out','r') as file:
     lines = (line.strip() for line in file if valid(line))
     data = np.array([extract(line) for line in lines])
     
@@ -145,13 +152,14 @@ zDC_pot = [float(phi) for phi in data[:,4]]
 
 
 fig_zDC,ax = plt.subplots(figsize=(10,5))
-ax.scatter(z_points,zDC_pot,marker='x',color='r',label='Simulation')
+ax.scatter(zDC_points,zDC_pot,marker='x',color='r',label='Simulation')
 
-zDC_vals, errs = curve_fit(f, z_points, zDC_pot)
+zDC_vals, errs = curve_fit(f, zDC_points, zDC_pot)
 
-ax.plot(z_axis,f(z_axis,zDC_vals[0],zDC_vals[1],zDC_vals[2]),label=f'Fit: $ax^2 + bx + c$\n $a=$ {zDC_vals[0]:.1e}; $b=$ {zDC_vals[1]:.1e}; $c=$ {zDC_vals[2]:.1e}')
-ax.set(xlabel='$z$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to end caps')
+ax.plot(zDC_axis,f(zDC_axis,zDC_vals[0],zDC_vals[1],zDC_vals[2]),label=f'Fit: $az^2 + bz + c$\n $a=$ {zDC_vals[0]:.1e}; $b=$ {zDC_vals[1]:.1e}; $c=$ {zDC_vals[2]:.1e}')
+ax.set(xlabel='$z$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to DC voltage')
 ax.legend(loc='upper right')
+
 
 alpha_zDC = zDC_vals[0]*z0**2
 print(f'alpha_z^DC = {abs(alpha_zDC):.4f}')

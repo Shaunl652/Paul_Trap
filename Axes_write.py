@@ -22,7 +22,8 @@ z0 = float(vals[1])
 # Measurment locations
 xaxis = np.linspace(-r0,+r0,11)/10
 yaxis = np.linspace(-r0,+r0,11)/10
-zaxis = np.linspace(-z0,+z0,11)/10
+zaxis = 1+np.linspace(-z0,z0,11)/10
+offset = 4
 
 with open('x_axis.dat','w') as f:
     for x in xaxis:
@@ -32,6 +33,10 @@ with open('y_axis.dat','w') as f:
     for y in yaxis:
         f.write(f'0 {y} 0 \n')
 
-with open('z_axis.dat','w') as f:
+with open('zAC_axis.dat','w') as f:
     for z in zaxis:
         f.write(f'0 0 {z} \n')
+        
+with open('zDC_axis.dat','w') as f:
+    for z in zaxis:
+        f.write(f'0 0 {z+offset} \n')

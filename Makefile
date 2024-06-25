@@ -1,8 +1,8 @@
 simulate:
 	-rm TrapAC.x_axis.out
 	-rm TrapAC.y_axis.out
-	-rm TrapAC.z_axis.out
-	-rm TrapDC.z_axis.out
+	-rm TrapAC.zAC_axis.out
+	-rm TrapDC.zDC_axis.out
 	python3 geo_write.py
 	python3 Axes_write.py
 	scuff-static < args_xAC
