@@ -31,4 +31,10 @@ Surface:
 	python3 Axes_write.py
 	python3 Plane_axes.py
 	scuff-static < args_Plane
-	
+
+Planes:
+	python3 Plane_axes.py
+	-rm TrapAC.xy_plane.out
+	-rm trapAC.xz_plane.out
+	scuff-static < args_xyplane
+	scuff-static < args_xzplane

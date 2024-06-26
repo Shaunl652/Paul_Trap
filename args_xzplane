@@ -1,0 +1,3 @@
+geometry TrapAC.scuffgeo
+EPFile   xz_plane.dat
+excitationfile Full.Excitations
