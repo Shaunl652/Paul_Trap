@@ -1,6 +1,5 @@
 EXCITATION Full
-	Rod3 450
-	Rod4 450
-	End_Cap_Top 300
-	End_Cap_Bot 300
+	End_Cap_Bot +300
+	End_Cap_Top -100
+	Probe       +0
 ENDEXCITATION

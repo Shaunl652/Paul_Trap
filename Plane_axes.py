@@ -19,8 +19,8 @@ def valid(line):
 with open('dims.txt','r') as file:
 	vals = [line for line in file if valid(line)]
     
-r0 = float(vals[0])
-z0 = float(vals[1])
+r0 = float(vals[0])+2
+z0 = float(vals[1])+5
 
 
 
@@ -39,4 +39,9 @@ with open('xz_plane.dat','w') as file:
     for x in xs:
         for z in zs:
             file.write(f'{x} 0 {z}\n')
+            
+with open('yz_plane.dat','w') as file:
+    for y in ys:
+        for z in zs:
+            file.write(f'0 {y} {z}\n')
 
