@@ -1,0 +1,3 @@
+geometry TrapAC.scuffgeo
+EPFile  volume_axes.dat
+excitationfile Full.Excitations
