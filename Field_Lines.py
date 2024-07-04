@@ -47,7 +47,7 @@ Ex = griddata(coords, np.array([float(line[5]) for line in data]), (XS,YS))
 Ey = griddata(coords, np.array([float(line[7]) for line in data]), (XS,YS))
 
 vmin = -100
-vmax = +300
+vmax = 0
 norm = mpl.colors.Normalize(vmin=vmin, vmax=vmax)
 
 import matplotlib.pyplot as plt

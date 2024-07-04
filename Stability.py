@@ -27,9 +27,9 @@ mass = lambda R: density*4*pi*(R*1e-9)**3/3
 imass = mass(iRadius) # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
-ialpha_rAC = 0.3748
-ialpha_zAC = 0.0323
-ialpha_zDC = 0.1395
+ialpha_rAC = 0.3622
+ialpha_zAC = 0.0307
+ialpha_zDC = 0.0999
 
 iZ = 85#9.85e-6 # charge number
 iOmega = 0.8 # RF Voltage frequencey kHz
@@ -66,7 +66,7 @@ def z_accel(Qm,alpha_ac,alpha_dc,Vdc,Vac,z0):
     return 2*Qm*(Qdc+Qac)*z0*1e-3
 
 def omega_i(Omega,q,a):
-    return (2*pi*Omega/2)*sqrt((q**2/2) + a)/2*pi
+    return (Omega/2)*sqrt((q**2/2) + a)/2*pi
 
 def trap_depth(alpha,V,Z):
     return e*Z*(alpha*V)/Boltzmann
@@ -94,8 +94,8 @@ charge_line, = ax.plot(q_axis,charges_func(ialpha_rAC, ialpha_zDC, iVac, iVdc, i
 # r_text = plt.gcf().text(0.65,0.4,f'max $a_r = $ {a_r:.2e}',fontsize=14)
 # z_text = plt.gcf().text(0.65,0.3,f'max $a_z = $ {a_z:.2e}',fontsize=14)
 CtM = plt.gcf().text(0.65,0.35,f'Charge to mass ratio: {e*iZ/imass:.2e}',fontsize=14)
-omega_r = plt.gcf().text(0.65,0.30,f'$\\omega_r = 2\\pi \\times$ {omega_i(iOmega,qr(iZ,ialpha_rAC,iVac,ir0,iOmega,iRadius),ar(iZ,ialpha_zDC,iVdc,iz0,iOmega,iRadius)):.2e}',fontsize=14)
-omega_z = plt.gcf().text(0.65,0.25,f'$\\omega_z = 2\\pi \\times$ {omega_i(iOmega,qr(iZ,ialpha_zAC,iVac,iz0,iOmega,iRadius),-2*ar(iZ,ialpha_zDC,iVdc,iz0,iOmega,iRadius)):.2e}',fontsize=14)
+omega_r = plt.gcf().text(0.65,0.30,f'$\\omega_r = 2\\pi \\times$ {omega_i(iOmega,qr(iZ,ialpha_rAC,iVac,ir0,iOmega,iRadius),ar(iZ,ialpha_zDC,iVdc,iz0,iOmega,iRadius)):.2e} Hz',fontsize=14)
+omega_z = plt.gcf().text(0.65,0.25,f'$\\omega_z = 2\\pi \\times$ {omega_i(iOmega,qr(iZ,ialpha_zAC,iVac,iz0,iOmega,iRadius),-2*ar(iZ,ialpha_zDC,iVdc,iz0,iOmega,iRadius)):.2e} Hz',fontsize=14)
 depth_r = plt.gcf().text(0.65,0.20,f'depth r: {trap_depth(ialpha_rAC, iVac,iZ):.2e} K',fontsize=14)
 depth_z = plt.gcf().text(0.65,0.15,f'depth z: {trap_depth(ialpha_zDC, iVdc,iZ):.2e} K',fontsize=14)
 
@@ -235,10 +235,10 @@ def update(val):
     a_r = r_accel(Z, alpha_zDC, alpha_rAC, Vdc, Vac, z0, r0)
     a_z = z_accel(Z, alpha_zAC, alpha_zDC, Vdc, Vac, z0)
     CtM.set_text(f'Charge to mass ratio: {e*Z/mass(Radius):.2e}')
-    omega_r.set_text(f'$\\omega_r = 2\\pi \\times$ {omega_i(Omega,qr(Z,alpha_rAC,Vac,r0,Omega,Radius),ar(Z,alpha_zDC,Vdc,z0,Omega,Radius)):.2e}')
-    omega_z.set_text(f'$\\omega_z = 2\\pi \\times$ {omega_i(Omega,qr(Z,alpha_zAC,Vac,z0,Omega,Radius),-2*ar(Z,alpha_zDC,Vdc,z0,Omega,Radius)):.2e}')
+    omega_r.set_text(f'$\\omega_r = 2\\pi \\times$ {omega_i(Omega,qr(Z,alpha_rAC,Vac,r0,Omega,Radius),ar(Z,alpha_zDC,Vdc,z0,Omega,Radius)):.2e} Hz')
+    omega_z.set_text(f'$\\omega_z = 2\\pi \\times$ {omega_i(Omega,qr(Z,alpha_zAC,Vac,z0,Omega,Radius),-2*ar(Z,alpha_zDC,Vdc,z0,Omega,Radius)):.2e} Hz')
     depth_r.set_text(f' depth r: {trap_depth(alpha_rAC, Vac,Z):.2e} K')
-    depth_r.set_text(f' depth r: {trap_depth(alpha_zAC, Vdc,Z):.2e} K')
+    depth_z.set_text(f' depth r: {trap_depth(alpha_zAC, Vdc,Z):.2e} K')
     
     # Redraw the plot
     fig.canvas.draw_idle()

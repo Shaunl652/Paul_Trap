@@ -1,5 +1,4 @@
 EXCITATION Full
-	End_Cap_Bot +300
-	End_Cap_Top -100
-	Probe       +0
+	End_Cap_Bot -100
+	Wehnelt     -100
 ENDEXCITATION
