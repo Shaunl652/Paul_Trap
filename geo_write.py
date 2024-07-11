@@ -40,7 +40,7 @@ with open('TrapAC.scuffgeo','w') as f:
     f.write('\n')
     f.write(f'OBJECT Wehnelt\n MESHFILE Wehnelt.o.msh\n   DISPLACED 0 0 {z0}\nENDOBJECT\n')
     f.write('\n')
-    f.write(f'OBJECT End_Cap_Top\n   MESHFILE Endcap_top.o.msh\n   DISPLACED 0 0 {+z0+2}\nENDOBJECT\n')
+    f.write(f'OBJECT End_Cap_Top\n   MESHFILE Endcap_top.o.msh\n   DISPLACED 0 0 {+z0+8}\nENDOBJECT\n')
     f.write('\n')
     f.write(f'OBJECT End_Cap_Bot\n   MESHFILE Endcap_bottom.o.msh\n   DISPLACED 0 0 {-z0}\n   ROTATED 45 ABOUT 0 0 1\nENDOBJECT\n')
 
@@ -56,7 +56,7 @@ with open('TrapDC.scuffgeo','w') as f:
     f.write('\n')
     f.write(f'OBJECT Wehnelt\n MESHFILE Wehnelt.o.msh\n   DISPLACED 0 0 {z0}\nENDOBJECT\n')
     f.write('\n')
-    f.write(f'OBJECT End_Cap_Top\n   MESHFILE Endcap_top.o.msh\n   DISPLACED 0 0 {+z0+2}\nENDOBJECT\n')
+    f.write(f'OBJECT End_Cap_Top\n   MESHFILE Endcap_top.o.msh\n   DISPLACED 0 0 {+z0+8}\nENDOBJECT\n')
     f.write('\n')
     f.write(f'OBJECT End_Cap_Bot\n   MESHFILE Endcap_bottom.o.msh\n   DISPLACED 0 0 {-z0}\n   ROTATED 45 ABOUT 0 0 1\nENDOBJECT\n')
     

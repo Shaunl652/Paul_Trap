@@ -17,11 +17,11 @@ show:
 	gmsh TrapAC.pp
 
 mesh:
-	gmsh Endcap_top.stl -2 -format msh2
+	gmsh Filament.stl -2 -format msh2
 	gmsh Endcap_bottom.stl -2 -format msh2
 	gmsh Rod.stl -2 -format msh2
 	gmsh Wehnelt.stl -2 -format msh2
-	mmgs -hausd 0.3 Endcap_top.msh
+	mmgs -hausd 0.3 Filament.msh
 	mmgs -hausd 0.3 Endcap_bottom.msh
 	mmgs -hausd 0.3 Rod.msh
 	mmgs -hausd 0.3 Wehnelt.msh
