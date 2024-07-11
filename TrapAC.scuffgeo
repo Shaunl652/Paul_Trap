@@ -23,8 +23,8 @@ OBJECT Wehnelt
    DISPLACED 0 0 16.65
 ENDOBJECT
 
-OBJECT End_Cap_Top
-   MESHFILE Endcap_top.o.msh
+OBJECT Filament
+   MESHFILE Filament.o.msh
    DISPLACED 0 0 24.65
 ENDOBJECT
 
