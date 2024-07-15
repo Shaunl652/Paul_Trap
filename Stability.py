@@ -161,9 +161,12 @@ ax.set_xlim(0,1.5)
 ax.set_ylim(-0.5,0.5)
 ax.set_xlabel('$|q|$')
 ax.set_ylabel('$a$')
+ax.plot(q_axis,-q_axis**2/2,label='$q_r^2/2$')
+
 
 
 q_conversion = (ialpha_zAC/ialpha_rAC)*(ir0/iz0)**2
+line = ax.plot(q_axis,-(q_axis*q_conversion)**2/4,label='$q_z^2/2$',color='tab:green')
 
 # Set up initial excludion regions
 ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:orange',alpha=0.5,label='Radial Unstable')
@@ -183,7 +186,7 @@ az_val = ar_val*(-2)
 point = ax.scatter(qr_val,ar_val,color='b')
 
 omega_r_val = omega_i(iOmega,qr_val,ar_val)
-omega_z_val = omega_i(iOmega,qz_val,az_val)
+omega_z_val = omega_i(iOmega,qz_val,az_val)#(iOmega/2)*sqrt(abs(az_val))#
 CtM = plt.gcf().text(0.65,0.35,f'Charge to mass ratio: {e*iZ/imass:.2e}',fontsize=14)
 omega_r = plt.gcf().text(0.65,0.30,f'$\\omega_r = 2\\pi \\times$ {omega_r_val/(2*pi):.0f} Hz',fontsize=14)
 omega_z = plt.gcf().text(0.65,0.25,f'$\\omega_z = 2\\pi \\times$ {omega_z_val/(2*pi):.0f} Hz',fontsize=14)
@@ -323,22 +326,23 @@ def update(val):
 
 
     # Updatest the exclusion regions
-    global ExcludeR1,ExcludeR2,ExcludeZ1,ExcludeZ2
+    global ExcludeR1,ExcludeR2,ExcludeZ1,ExcludeZ2,line
     ExcludeR1.remove()
     ExcludeR2.remove()
     ExcludeZ1.remove()
     ExcludeZ2.remove()
-
+    line[0].remove()
+    
     ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:orange',alpha=0.5)
     ExcludeR2 = ax.fill_between(q_axis,+mathieu_b(1,q_axis),  y2=+10,color='tab:orange',alpha=0.5)
     ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*q_conversion)/2,y2=+10,color='tab:red',alpha=0.5)
     ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
-
+    line = ax.plot(q_axis,-(q_axis*q_conversion)**2/4,label='$q_z^2/2$',color='tab:green')
 
     CtM.set_text(f'Charge to mass ratio: {e*Z/mass_val:.2e}')
     
     omega_r_val = omega_i(Omega,qr_val,ar_val)
-    omega_z_val = omega_i(Omega,qz_val,az_val)
+    omega_z_val = omega_i(Omega,qz_val,az_val)#(Omega/2)*sqrt(abs(az_val))#
     omega_r.set_text(f'$\\omega_r = 2\\pi \\times$ {omega_r_val/(2*pi):.0f} Hz')
     omega_z.set_text(f'$\\omega_z = 2\\pi \\times$ {omega_z_val/(2*pi):.0f} Hz')
 
