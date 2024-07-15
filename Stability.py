@@ -8,6 +8,13 @@
 # =============================================================================
 
 
+# =============================================================================
+# To do:
+# 1) Correct to SI units trhoughout calcualtions
+#    We also want to output human readable versions
+# 2) Debug why the trap frequancies and depths are wrong
+# =============================================================================
+
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.constants import elementary_charge as e
@@ -20,26 +27,27 @@ q_axis = np.linspace(0,1.5 ,1001)
 
 
 # Initial Parameters
-iRadius = 150 # Particle radius nm
+iRadius = 150e-9 # Particle radius m
 density = 2000 # particle density kg/m^3
-mass = lambda R: density*4*pi*(R*1e-9)**3/3
+mass = lambda R: density*4*pi*(R)**3/3
 imass = mass(iRadius) # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
-ialpha_rAC = 0.3622
-ialpha_zAC = 0.0307
-ialpha_zDC = 0.0999
+ialpha_rAC = 0.3622 #0.93/2 #
+ialpha_zAC = 0.0307 #1 #
+ialpha_zDC = 0.0999 #0.38/2 #
 
 iZ = 85#9.85e-6 # charge number
-iRF_Freq = 0.8 # RF Voltage frequencey kHz
-ir0 = 04.00 # distacne to pole from trap centre in mm
-iz0 = 16.65 # distance to end caps from trap centre mm
-iVac = 450 # RF voltage V
-iVdc = 300 # DC volatage V
+iRF_Freq = 0.8e3 #7.7e3 # # RF Voltage frequencey Hz
+iOmega = 2*pi *iRF_Freq
+ir0 = 04.00e-3 #1.8e-3/2 # # distacne to pole from trap centre in m
+iz0 = 16.653e-3 #2.8e-3/2 # # distance to end caps from trap centre m
+iVac = 450 #830 # # RF voltage V
+iVdc = 300 #130 # # DC volatage V
 
 # Now start on the params q and a
 
-def a_r(Z,alpha,V,z0,RF_Freq,Radius):
+def a_r(Z,alpha,V,z0,Omega,Radius):
     """
     Finds the a_r parameter
 
@@ -50,13 +58,13 @@ def a_r(Z,alpha,V,z0,RF_Freq,Radius):
     alpha : FLOAT
         The geometric factor alpha_zDC.
     V : FLOAT
-        The voltage amplitude on the end caps.
+        The voltage amplitude on the end caps in V.
     z0 : FLOAT
-        The distance from the centre of the trap to the end cap in mm.
-    RF_Freq : FLOAT
-        The RF frequency in kHz.
+        The distance from the centre of the trap to the end cap in m.
+    Omega : FLOAT
+        The angluar RF frequency in Rad/s.
     Radius : FLOAT
-        The radius of the particle in nm.
+        The radius of the particle in m.
 
     Returns
     -------
@@ -64,11 +72,12 @@ def a_r(Z,alpha,V,z0,RF_Freq,Radius):
         The value of a_r.
 
     """
-    
-    return ((-4*Z*e/mass(Radius))/((2*pi*RF_Freq*1e3)**2)) *alpha *(V/(z0*1e-3)**2)
+    Q = (alpha*V)/(z0**2)
+    return -((4*Z*e*Q)/(mass(Radius)*Omega**2))
 
 
-def q_r(Z,alpha,V,r0,RF_Freq,Radius):
+
+def q_r(Z,alpha,V,r0,Omega,Radius):
     """
     Finds the a_r parameter
 
@@ -81,11 +90,11 @@ def q_r(Z,alpha,V,r0,RF_Freq,Radius):
     V : FLOAT
         The voltage amplitude on the RF electrodes.
     r0 : FLOAT
-        The distance from the centre of the trap to the RF electrodes in mm.
-    RF_Freq : FLOAT
-        The RF frequency in kHz.
+        The distance from the centre of the trap to the RF electrodes in m.
+    Omega : FLOAT
+        The angular RF frequency in Rad/s.
     Radius : FLOAT
-        The radius of the particle in nm.
+        The radius of the particle in m.
 
     Returns
     -------
@@ -93,17 +102,19 @@ def q_r(Z,alpha,V,r0,RF_Freq,Radius):
         The value of a_r.
 
     """
-    return ((4*Z*e/mass(Radius))/((2*pi*RF_Freq*1e3)**2)) *alpha *(V/(r0*1e-3)**2)
+    Q = (alpha*V)/(r0**2)
+    return ((4*Z*e*Q)/(mass(Radius)*Omega**2))
 
 
-def omega_i(RF_Freq,q,a):
+
+def omega_i(Omega,q,a):
     """
     Finds the trap frequancy in the i direction
 
     Parameters
     ----------
-    RF_Freq: FLOAT
-        The RF frequancy in kHz.
+    Omega: FLOAT
+        The angular RF frequancy in Rad/s.
     q : FLOAT
         The value of the q parameter for the relevant axis.
     a : FLAOT
@@ -116,7 +127,7 @@ def omega_i(RF_Freq,q,a):
 
     """
     
-    return (2*pi*RF_Freq/2)*sqrt((q**2/2) + a)
+    return (Omega/2)*sqrt((q**2/2) - abs(a))
 
 def trap_depth(alpha,V,Z):
     """
@@ -150,26 +161,28 @@ ax.set_ylim(-0.5,0.5)
 ax.set_xlabel('$|q|$')
 ax.set_ylabel('$a$')
 
+q_conversion = (ialpha_zAC/ialpha_rAC)*(ir0/iz0)**2
+
 # Set up initial excludion regions
 ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:orange',alpha=0.5,label='Radial Unstable')
 ExcludeR2 = ax.fill_between(q_axis,+mathieu_b(1,q_axis),  y2=+10,color='tab:orange',alpha=0.5)
-ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*(ialpha_zAC/ialpha_rAC)*(ir0**2/iz0**2))/2,y2=+10,color='tab:red',alpha=0.5,label='Axialy Unstable')
-ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*(ialpha_zAC/ialpha_rAC)*(ir0**2/iz0**2))/2,y2=-10,color='tab:red',alpha=0.5)
+ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*q_conversion)/2,y2=+10,color='tab:red',alpha=0.5,label='Axialy Unstable')
+ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
 
 # The q and a values of the point in the r axis
-qr_val = q_r(iZ,ialpha_rAC,iVac,ir0,iRF_Freq,iRadius)
-ar_val = a_r(iZ,ialpha_zDC,iVdc,iz0,iRF_Freq,iRadius)
+qr_val = q_r(iZ,ialpha_rAC,iVac,ir0,iOmega,iRadius)
+ar_val = a_r(iZ,ialpha_zDC,iVdc,iz0,iOmega,iRadius)
 
 # The q and a vals of the point in the z axis
-qz_val = q_r(iZ,ialpha_zAC,iVac,iz0,iRF_Freq,iRadius)/((ialpha_zAC/ialpha_rAC)*(ir0**2/iz0**2))
-az_val = a_r(iZ,ialpha_zDC,iVdc,iz0,iRF_Freq,iRadius)*-2
+qz_val = qr_val*q_conversion
+az_val = ar_val*(-2)
 
 # The point plotted in the stability diagram
 point = ax.scatter(qr_val,ar_val,color='b')
 
 CtM = plt.gcf().text(0.65,0.35,f'Charge to mass ratio: {e*iZ/imass:.2e}',fontsize=14)
-omega_r = plt.gcf().text(0.65,0.30,f'$\\omega_r = 2\\pi \\times$ {omega_i(iRF_Freq,qr_val,ar_val)/(2*pi):.2e} Hz',fontsize=14)
-omega_z = plt.gcf().text(0.65,0.25,f'$\\omega_z = 2\\pi \\times$ {omega_i(iRF_Freq,qz_val,az_val)/(2*pi):.2e} Hz',fontsize=14)
+omega_r = plt.gcf().text(0.65,0.30,f'$\\omega_r = 2\\pi \\times$ {omega_i(iOmega,qr_val,ar_val)/(2*pi):.0f} Hz',fontsize=14)
+omega_z = plt.gcf().text(0.65,0.25,f'$\\omega_z = 2\\pi \\times$ {omega_i(iOmega,qz_val,az_val)/(2*pi):.0f} Hz',fontsize=14)
 depth_r = plt.gcf().text(0.65,0.20,f'depth r: {trap_depth(ialpha_rAC, iVac,iZ):.2e} K',fontsize=14)
 depth_z = plt.gcf().text(0.65,0.15,f'depth z: {trap_depth(ialpha_zDC, iVdc,iZ):.2e} K',fontsize=14)
 
@@ -232,6 +245,7 @@ Z_slider = Slider(
     label='$Z$',
     valmin=1,
     valmax=1000,
+    valstep=1,
     valinit=iZ
 )
 # Slider for Omega
@@ -242,7 +256,7 @@ RF_Freq_slider = Slider(
     #valstep=np.logspace(0,6,101),
     valmin=0.01,
     valmax=20,
-    valinit=iRF_Freq
+    valinit=iRF_Freq/1e3
 )
 
 # Slider for r0
@@ -252,7 +266,7 @@ r0_slider = Slider(
     label='$R_0$ [mm]',
     valmin=0.5,
     valmax=20,
-    valinit=ir0
+    valinit=ir0/1e-3
 )
 # Slider for z0
 axz0= fig.add_axes([0.65, 0.45, 0.3, 0.03])
@@ -261,7 +275,7 @@ z0_slider = Slider(
     label='$z_0$ [mm]',
     valmin=1.,
     valmax=50,
-    valinit=iz0
+    valinit=iz0/1e-3
 )
 
 # Slider for particle radius
@@ -271,7 +285,7 @@ Rad_slider = Slider(
     label='$R$ [nm]',
     valmin=100,
     valmax=1000,
-    valinit=iRadius
+    valinit=iRadius/1e-9
 )
 
 
@@ -285,18 +299,20 @@ def update(val):
     alpha_zAC = azAC_slider.val
     alpha_zDC = azDC_slider.val
     Z = Z_slider.val
-    RF_Freq = RF_Freq_slider.val
-    Radius = Rad_slider.val
-    r0 = r0_slider.val
-    z0 = z0_slider.val
+    RF_Freq = RF_Freq_slider.val*1e3
+    Omega = 2*pi*RF_Freq
+    Radius = Rad_slider.val*1e-9
+    r0 = r0_slider.val*1e-3
+    z0 = z0_slider.val*1e-3
     
+    q_conversion = (alpha_zAC/alpha_rAC)*(r0/z0)**2
     # The q and a values of the point in the r axis
-    qr_val = q_r(Z,alpha_rAC,Vac,r0,RF_Freq,Radius)
-    ar_val = a_r(Z,alpha_zDC,Vdc,z0,RF_Freq,Radius)
+    qr_val = q_r(Z,alpha_rAC,Vac,r0,Omega,Radius)
+    ar_val = a_r(Z,alpha_zDC,Vdc,z0,Omega,Radius)
 
     # The q and a vals of the point in the z axis
-    qz_val = q_r(iZ,ialpha_zAC,iVac,iz0,iRF_Freq,iRadius)/((ialpha_zAC/ialpha_rAC)*(ir0**2/iz0**2))
-    az_val = a_r(iZ,ialpha_zDC,iVdc,iz0,iRF_Freq,iRadius)*-2
+    qz_val = q_r(Z,alpha_zAC,Vac,z0,Omega,Radius)*q_conversion
+    az_val = a_r(Z,alpha_zDC,Vdc,z0,Omega,Radius)*(-2)
     # Updates the point
     point.set_offsets([qr_val,ar_val])
 
@@ -310,14 +326,14 @@ def update(val):
 
     ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:orange',alpha=0.5)
     ExcludeR2 = ax.fill_between(q_axis,+mathieu_b(1,q_axis),  y2=+10,color='tab:orange',alpha=0.5)
-    ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*(alpha_zAC/alpha_rAC)*(r0**2/z0**2))/2,y2=+10,color='tab:red',alpha=0.5)
-    ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*(alpha_zAC/alpha_rAC)*(r0**2/z0**2))/2,y2=-10,color='tab:red',alpha=0.5)
+    ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*q_conversion)/2,y2=+10,color='tab:red',alpha=0.5)
+    ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
 
 
     CtM.set_text(f'Charge to mass ratio: {e*Z/mass(Radius):.2e}')
     
-    omega_r.set_text(f'$\\omega_r = 2\\pi \\times$ {omega_i(RF_Freq,qr_val,ar_val)/(2*pi):.2e} Hz')
-    omega_z.set_text(f'$\\omega_z = 2\\pi \\times$ {omega_i(RF_Freq,qz_val,az_val)/(2*pi):.2e} Hz')
+    omega_r.set_text(f'$\\omega_r = 2\\pi \\times$ {omega_i(Omega,qr_val,ar_val)/(2*pi):.0f} Hz')
+    omega_z.set_text(f'$\\omega_z = 2\\pi \\times$ {omega_i(Omega,qz_val,az_val)/(2*pi):.0f} Hz')
 
     
     depth_r.set_text(f' depth r: {trap_depth(alpha_rAC, Vac,Z):.2e} K')
