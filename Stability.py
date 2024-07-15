@@ -168,8 +168,8 @@ q_conversion = (ialpha_zAC/ialpha_rAC)*(ir0/iz0)**2
 # Set up initial excludion regions
 ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:orange',alpha=0.5,label='Radial Unstable')
 ExcludeR2 = ax.fill_between(q_axis,+mathieu_b(1,q_axis),  y2=+10,color='tab:orange',alpha=0.5)
-ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis/q_conversion)/2,y2=+10,color='tab:red',alpha=0.5,label='Axialy Unstable')
-ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis/q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
+ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*q_conversion)/2,y2=+10,color='tab:red',alpha=0.5,label='Axialy Unstable')
+ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
 
 # The q and a values of the point in the r axis
 qr_val = q_r(iZ,ialpha_rAC,iVac,ir0,iOmega,iRadius)
@@ -331,8 +331,8 @@ def update(val):
 
     ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:orange',alpha=0.5)
     ExcludeR2 = ax.fill_between(q_axis,+mathieu_b(1,q_axis),  y2=+10,color='tab:orange',alpha=0.5)
-    ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis/q_conversion)/2,y2=+10,color='tab:red',alpha=0.5)
-    ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis/q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
+    ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*q_conversion)/2,y2=+10,color='tab:red',alpha=0.5)
+    ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
 
 
     CtM.set_text(f'Charge to mass ratio: {e*Z/mass_val:.2e}')
