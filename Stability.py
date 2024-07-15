@@ -129,27 +129,28 @@ def omega_i(Omega,q,a):
     
     return (Omega/2)*sqrt((q**2/2) - abs(a))
 
-def trap_depth(alpha,V,Z):
+def trap_depth(mass,omega,d0):
     """
-    Finds the trap depth in the relevant axis
+    
 
     Parameters
     ----------
-    alpha : FLOAT
-        The geometric factor for the relevant axis.
-    V : FLOAT
-        Volatage amplitude for the given axis.
-    Z : INTEGER
-        The number of elemetry charges on the particle.
+    mass : FLAOT
+        The mass of the trapped object in kg.
+    omega : FLOAT
+        The trap frequency in the given axis.
+    d0 : FLOAT
+        The distance from the trap centre the the relevant electrode.
 
     Returns
     -------
     FLOAT
-        The trap dpeth in K.
+        The trap depth in the given axis in K.
 
     """
 
-    return e*Z*(alpha*V)/Boltzmann
+    return mass*omega**2*d0**2/Boltzmann
+
 
 from matplotlib.widgets import Button, Slider
 
@@ -181,11 +182,13 @@ az_val = ar_val*(-2)
 # The point plotted in the stability diagram
 point = ax.scatter(qr_val,ar_val,color='b')
 
+omega_r_val = omega_i(iOmega,qr_val,ar_val)
+omega_z_val = omega_i(iOmega,qz_val,az_val)
 CtM = plt.gcf().text(0.65,0.35,f'Charge to mass ratio: {e*iZ/imass:.2e}',fontsize=14)
-omega_r = plt.gcf().text(0.65,0.30,f'$\\omega_r = 2\\pi \\times$ {omega_i(iOmega,qr_val,ar_val)/(2*pi):.0f} Hz',fontsize=14)
-omega_z = plt.gcf().text(0.65,0.25,f'$\\omega_z = 2\\pi \\times$ {omega_i(iOmega,qz_val,az_val)/(2*pi):.0f} Hz',fontsize=14)
-depth_r = plt.gcf().text(0.65,0.20,f'depth r: {trap_depth(ialpha_rAC, iVac,iZ):.2e} K',fontsize=14)
-depth_z = plt.gcf().text(0.65,0.15,f'depth z: {trap_depth(ialpha_zDC, iVdc,iZ):.2e} K',fontsize=14)
+omega_r = plt.gcf().text(0.65,0.30,f'$\\omega_r = 2\\pi \\times$ {omega_r_val/(2*pi):.0f} Hz',fontsize=14)
+omega_z = plt.gcf().text(0.65,0.25,f'$\\omega_z = 2\\pi \\times$ {omega_z_val/(2*pi):.0f} Hz',fontsize=14)
+depth_r = plt.gcf().text(0.65,0.20,f'depth r: {trap_depth(imass,omega_r_val,ir0):.2e} K',fontsize=14)
+depth_z = plt.gcf().text(0.65,0.15,f'depth z: {trap_depth(imass,omega_z_val,iz0):.2e} K',fontsize=14)
 
 
 ax.legend()
@@ -306,6 +309,7 @@ def update(val):
     r0        = r0_slider.val*1e-3
     z0        = z0_slider.val*1e-3
     
+    mass_val = mass(Radius)
     q_conversion = (alpha_zAC/alpha_rAC)*(r0/z0)**2
     # The q and a values of the point in the r axis
     qr_val = q_r(Z,alpha_rAC,Vac,r0,Omega,Radius)
@@ -331,14 +335,16 @@ def update(val):
     ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis/q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
 
 
-    CtM.set_text(f'Charge to mass ratio: {e*Z/mass(Radius):.2e}')
+    CtM.set_text(f'Charge to mass ratio: {e*Z/mass_val:.2e}')
     
-    omega_r.set_text(f'$\\omega_r = 2\\pi \\times$ {omega_i(Omega,qr_val,ar_val)/(2*pi):.0f} Hz')
-    omega_z.set_text(f'$\\omega_z = 2\\pi \\times$ {omega_i(Omega,qz_val,az_val)/(2*pi):.0f} Hz')
+    omega_r_val = omega_i(Omega,qr_val,ar_val)
+    omega_z_val = omega_i(Omega,qz_val,az_val)
+    omega_r.set_text(f'$\\omega_r = 2\\pi \\times$ {omega_r_val/(2*pi):.0f} Hz')
+    omega_z.set_text(f'$\\omega_z = 2\\pi \\times$ {omega_z_val/(2*pi):.0f} Hz')
 
     
-    depth_r.set_text(f' depth r: {trap_depth(alpha_rAC, Vac,Z):.2e} K')
-    depth_z.set_text(f' depth r: {trap_depth(alpha_zAC, Vdc,Z):.2e} K')
+    depth_r.set_text(f' depth r: {trap_depth(mass_val,omega_r_val,r0):.2e} K')
+    depth_z.set_text(f' depth z: {trap_depth(mass_val,omega_z_val,z0):.2e} K')
 
     # Redraw the plot
     fig.canvas.draw_idle()
