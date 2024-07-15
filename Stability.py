@@ -33,17 +33,17 @@ mass = lambda R: density*4*pi*(R)**3/3
 imass = mass(iRadius) # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
-ialpha_rAC = 0.3622 #0.93/2 #
-ialpha_zAC = 0.0307 #1 #
-ialpha_zDC = 0.0999 #0.38/2 #
+ialpha_rAC = 0.93/2 #0.3622 #
+ialpha_zAC = 1 #0.0307 #
+ialpha_zDC = 0.38/2 #0.0999 #
 
 iZ = 85#9.85e-6 # charge number
-iRF_Freq = 0.8e3 #7.7e3 # # RF Voltage frequencey Hz
+iRF_Freq = 7.7e3 #0.8e3 # # RF Voltage frequencey Hz
 iOmega = 2*pi *iRF_Freq
-ir0 = 04.00e-3 #1.8e-3/2 # # distacne to pole from trap centre in m
-iz0 = 16.653e-3 #2.8e-3/2 # # distance to end caps from trap centre m
-iVac = 450 #830 # # RF voltage V
-iVdc = 300 #130 # # DC volatage V
+ir0 = 1.8e-3/2 #04.00e-3 # # distacne to pole from trap centre in m
+iz0 = 2.8e-3/2 #16.653e-3 # # distance to end caps from trap centre m
+iVac = 830 #450 # # RF voltage V
+iVdc = 130 #300 # # DC volatage V
 
 # Now start on the params q and a
 
@@ -161,13 +161,14 @@ ax.set_ylim(-0.5,0.5)
 ax.set_xlabel('$|q|$')
 ax.set_ylabel('$a$')
 
+
 q_conversion = (ialpha_zAC/ialpha_rAC)*(ir0/iz0)**2
 
 # Set up initial excludion regions
 ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:orange',alpha=0.5,label='Radial Unstable')
 ExcludeR2 = ax.fill_between(q_axis,+mathieu_b(1,q_axis),  y2=+10,color='tab:orange',alpha=0.5)
-ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*q_conversion)/2,y2=+10,color='tab:red',alpha=0.5,label='Axialy Unstable')
-ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
+ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis/q_conversion)/2,y2=+10,color='tab:red',alpha=0.5,label='Axialy Unstable')
+ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis/q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
 
 # The q and a values of the point in the r axis
 qr_val = q_r(iZ,ialpha_rAC,iVac,ir0,iOmega,iRadius)
@@ -293,17 +294,17 @@ Rad_slider = Slider(
 # The function to be called anytime a slider's value changes
 def update(val):
     # Sort out variables
-    Vac = Vac_slider.val
-    Vdc = Vdc_slider.val
+    Vac       = Vac_slider.val
+    Vdc       = Vdc_slider.val
     alpha_rAC = arAC_slider.val
     alpha_zAC = azAC_slider.val
     alpha_zDC = azDC_slider.val
-    Z = Z_slider.val
-    RF_Freq = RF_Freq_slider.val*1e3
-    Omega = 2*pi*RF_Freq
-    Radius = Rad_slider.val*1e-9
-    r0 = r0_slider.val*1e-3
-    z0 = z0_slider.val*1e-3
+    Z         = Z_slider.val
+    RF_Freq   = RF_Freq_slider.val*1e3
+    Omega     = 2*pi*RF_Freq
+    Radius    = Rad_slider.val*1e-9
+    r0        = r0_slider.val*1e-3
+    z0        = z0_slider.val*1e-3
     
     q_conversion = (alpha_zAC/alpha_rAC)*(r0/z0)**2
     # The q and a values of the point in the r axis
@@ -311,8 +312,8 @@ def update(val):
     ar_val = a_r(Z,alpha_zDC,Vdc,z0,Omega,Radius)
 
     # The q and a vals of the point in the z axis
-    qz_val = q_r(Z,alpha_zAC,Vac,z0,Omega,Radius)*q_conversion
-    az_val = a_r(Z,alpha_zDC,Vdc,z0,Omega,Radius)*(-2)
+    qz_val = qr_val*q_conversion
+    az_val = ar_val*(-2)
     # Updates the point
     point.set_offsets([qr_val,ar_val])
 
@@ -326,8 +327,8 @@ def update(val):
 
     ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:orange',alpha=0.5)
     ExcludeR2 = ax.fill_between(q_axis,+mathieu_b(1,q_axis),  y2=+10,color='tab:orange',alpha=0.5)
-    ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*q_conversion)/2,y2=+10,color='tab:red',alpha=0.5)
-    ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
+    ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis/q_conversion)/2,y2=+10,color='tab:red',alpha=0.5)
+    ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis/q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
 
 
     CtM.set_text(f'Charge to mass ratio: {e*Z/mass(Radius):.2e}')
