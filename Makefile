@@ -19,11 +19,13 @@ show:
 mesh:
 	gmsh Filament.stl -2 -format msh2
 	gmsh Endcap_bottom.stl -2 -format msh2
-	gmsh Rod.stl -2 -format msh2
+	gmsh RF_Upper.stl -2 -format msh2
+	gmhs RF_Lower.stl -2 -format msh2
 	gmsh Wehnelt.stl -2 -format msh2
 	mmgs -hausd 0.3 Filament.msh
 	mmgs -hausd 0.3 Endcap_bottom.msh
-	mmgs -hausd 0.3 Rod.msh
+	mmgs -hausd 0.3 RF_Upper.msh
+	mmgs -hausd 0.3 RF_Lower.msh
 	mmgs -hausd 0.3 Wehnelt.msh
 
 Surface:
