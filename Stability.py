@@ -8,12 +8,6 @@
 # =============================================================================
 
 
-# =============================================================================
-# To do:
-# 1) Correct to SI units trhoughout calcualtions
-#    We also want to output human readable versions
-# 2) Debug why the trap frequancies and depths are wrong
-# =============================================================================
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -33,17 +27,17 @@ mass = lambda R: density*4*pi*(R)**3/3
 imass = mass(iRadius) # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
-ialpha_rAC = 0.93/2 #0.3622 #
-ialpha_zAC = 1 #0.0307 #
-ialpha_zDC = 0.38/2 #0.0999 #
+ialpha_rAC = 0.4865 #0.3622 #0.93/2 #
+ialpha_zAC = 0.1040 #0.0281 #1 #
+ialpha_zDC = 0.2070 #0.0933 #0.38/2 #
 
 iZ = 85#9.85e-6 # charge number
-iRF_Freq = 7.7e3 #0.8e3 # # RF Voltage frequencey Hz
+iRF_Freq = 0.8e3 #7.7e3 # # RF Voltage frequencey Hz
 iOmega = 2*pi *iRF_Freq
-ir0 = 1.8e-3/2 #04.00e-3 # # distacne to pole from trap centre in m
-iz0 = 2.8e-3/2 #16.653e-3 # # distance to end caps from trap centre m
-iVac = 830 #450 # # RF voltage V
-iVdc = 130 #300 # # DC volatage V
+ir0 = 0.5e-3 #04.00e-3 #1.8e-3/2 # # distacne to pole from trap centre in m
+iz0 = 1.15e-3 #16.653e-3 #2.8e-3/2 # # distance to end caps from trap centre m
+iVac = 450 #830 # # RF voltage V
+iVdc = 300 #130 # # DC volatage V
 
 # Now start on the params q and a
 
@@ -173,7 +167,7 @@ ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:oran
 ExcludeR2 = ax.fill_between(q_axis,+mathieu_b(1,q_axis),  y2=+10,color='tab:orange',alpha=0.5)
 ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*q_conversion)/2,y2=+10,color='tab:red',alpha=0.5,label='Axialy Unstable')
 ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
-ExcludeZ3 = ax.fill_between(q_axis,-(q_axis*q_conversion)**2/4,y2=-10,color='tab:red',alpha=0.5)
+ExcludeR3 = ax.fill_between(q_axis,-(q_axis*q_conversion)**2/4,y2=-10,color='tab:orange',alpha=0.5)
 
 # The q and a values of the point in the r axis
 qr_val = q_r(iZ,ialpha_rAC,iVac,ir0,iOmega,iRadius)
@@ -327,18 +321,18 @@ def update(val):
 
 
     # Updatest the exclusion regions
-    global ExcludeR1,ExcludeR2,ExcludeZ1,ExcludeZ2,ExcludeZ3
+    global ExcludeR1,ExcludeR2,ExcludeZ1,ExcludeZ2,ExcludeR3
     ExcludeR1.remove()
     ExcludeR2.remove()
     ExcludeZ1.remove()
     ExcludeZ2.remove()
-    ExcludeZ3.remove()
+    ExcludeR3.remove()
     
     ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:orange',alpha=0.5)
     ExcludeR2 = ax.fill_between(q_axis,+mathieu_b(1,q_axis),  y2=+10,color='tab:orange',alpha=0.5)
     ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*q_conversion)/2,y2=+10,color='tab:red',alpha=0.5)
     ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
-    ExcludeZ3 = ax.fill_between(q_axis,-(q_axis*q_conversion)**2/4,y2=-10,color='tab:red',alpha=0.5)
+    ExcludeR3 = ax.fill_between(q_axis,-(q_axis*q_conversion)**2/4,y2=-10,color='tab:orange',alpha=0.5)
 
     CtM.set_text(f'Charge to mass ratio: {e*Z/mass_val:.2e}')
     
