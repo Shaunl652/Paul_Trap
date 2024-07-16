@@ -26,15 +26,15 @@ mass = lambda R: density*4*pi*(R)**3/3
 imass = mass(iRadius) # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
-ialpha_rAC = 0.93/2 #0.4865 #0.3622 #
-ialpha_zAC = 1 #0.1040 #0.0281 #
-ialpha_zDC = 0.38/2 #0.2070 #0.0933 #
+ialpha_rAC = 0.93/2 #0.3622 #
+ialpha_zAC = 0.0281 #1  #
+ialpha_zDC = 0.38/2 #0.0933 #
 
 iZ = 85#9.85e-6 # charge number
 iRF_Freq = 7.7e3 #0.8e3 # # RF Voltage frequencey Hz
 iOmega = 2*pi *iRF_Freq
-ir0 = 1.8e-3/2 #0.5e-3 #04.00e-3 # # distacne to pole from trap centre in m
-iz0 = 2.8e-3/2 #1.15e-3 #16.653e-3 # # distance to end caps from trap centre m
+ir0 = 1.8e-3/2 #04.00e-3 # distacne to pole from trap centre in m
+iz0 = 2.8e-3/2 #16.653e-3 # # distance to end caps from trap centre m
 iVac = 830 #450 # # RF voltage V
 iVdc = 130 #300 # # DC volatage V
 
