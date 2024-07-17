@@ -20,7 +20,7 @@ mesh:
 	gmsh Filament.stl -2 -format msh2
 	gmsh Endcap_bottom.stl -2 -format msh2
 	gmsh RF_Upper.stl -2 -format msh2
-	gmhs RF_Lower.stl -2 -format msh2
+	gmsh RF_Lower.stl -2 -format msh2
 	gmsh Wehnelt.stl -2 -format msh2
 	mmgs -hausd 0.3 Filament.msh
 	mmgs -hausd 0.3 Endcap_bottom.msh
