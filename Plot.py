@@ -103,31 +103,31 @@ print(f'alpha_r^AC = {alpha_rAC:.4f}')
 # Now we move onto alpha_z^AC
 # =============================================================================
 
-with open('zAC_axis.dat','r') as file:
-    lines = (line.strip() for line in file if valid(line))
-    zAC_coords = np.array([extract(line) for line in lines])
+# with open('zAC_axis.dat','r') as file:
+#     lines = (line.strip() for line in file if valid(line))
+#     zAC_coords = np.array([extract(line) for line in lines])
     
-zAC_points = np.array([float(z) for z in zAC_coords[:,2]])
-zAC_axis = np.linspace(min(zAC_points),max(zAC_points),1001)
+# zAC_points = np.array([float(z) for z in zAC_coords[:,2]])
+# zAC_axis = np.linspace(min(zAC_points),max(zAC_points),1001)
 
-with open('TrapAC.zAC_axis.out','r') as file:
-    lines = (line.strip() for line in file if valid(line))
-    data = np.array([extract(line) for line in lines])
+# with open('TrapAC.zAC_axis.out','r') as file:
+#     lines = (line.strip() for line in file if valid(line))
+#     data = np.array([extract(line) for line in lines])
     
-zAC_pot = [float(phi) for phi in data[:,4]]
+# zAC_pot = [float(phi) for phi in data[:,4]]
 
 
-fig_zAC,ax = plt.subplots(figsize=(10,5))
-ax.scatter(zAC_points,zAC_pot,marker='x',color='r',label='Simulation')
+# fig_zAC,ax = plt.subplots(figsize=(10,5))
+# ax.scatter(zAC_points,zAC_pot,marker='x',color='r',label='Simulation')
 
-zAC_vals, errs = curve_fit(f, zAC_points, zAC_pot)
+# zAC_vals, errs = curve_fit(f, zAC_points, zAC_pot)
 
-ax.plot(zAC_axis,f(zAC_axis,zAC_vals[0],zAC_vals[1],zAC_vals[2]),label=f'Fit: $az^2 + bz + c$\n $a=$ {zAC_vals[0]:.1e}; $b=$ {zAC_vals[1]:.1e}; $c=$ {zAC_vals[2]:.1e}')
-ax.set(xlabel='$z$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to RF voltage')
-ax.legend(loc='upper right')
+# ax.plot(zAC_axis,f(zAC_axis,zAC_vals[0],zAC_vals[1],zAC_vals[2]),label=f'Fit: $az^2 + bz + c$\n $a=$ {zAC_vals[0]:.1e}; $b=$ {zAC_vals[1]:.1e}; $c=$ {zAC_vals[2]:.1e}')
+# ax.set(xlabel='$z$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to RF voltage')
+# ax.legend(loc='upper right')
 
-alpha_zAC = zAC_vals[0]*z0**2
-print(f'alpha_z^AC = {abs(alpha_zAC):.4f}')
+# alpha_zAC = zAC_vals[0]*z0**2
+# print(f'alpha_z^AC = {abs(alpha_zAC):.4f}')
 
 
 
