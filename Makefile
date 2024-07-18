@@ -12,14 +12,14 @@ simulate:
 
 show:
 	python3 geo_write.py
-	scuff-analyze --geometry TrapAC.scuffgeo --WriteGMSHFiles
+	scuff-analyze --geometry TrapDC.scuffgeo --WriteGMSHFiles
 	gmsh TrapAC.pp
 
 mesh:
 	gmsh Endcap.stl -2 -format msh2
 	gmsh Rod.stl -2 -format msh2
-	mmgs -hausd 0.1 Endcap.msh
-	mmgs -hausd 0.1x Rod.msh
+	mmgs -hausd 0.01 Endcap.msh
+	mmgs -hausd 0.1 Rod.msh
 
 Surface:
 	-rm TrapAC.plane.out
