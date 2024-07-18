@@ -27,9 +27,9 @@ mass = lambda R: density*4*pi*(R)**3/3
 imass = mass(iRadius) # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
-ialpha_rAC = 0.93/2 #0.4865 #0.3622 #
+ialpha_rAC = 0.4378 #0.93/2 #0.4865 #0.3622 #
 #ialpha_zAC = 0.1040 #0.0281 #1 #
-ialpha_zDC = 0.38/2 #0.2070 #0.0933 #0.38/2 #
+ialpha_zDC = 0.1162 #0.38/2 #0.2070 #0.0933 #0.38/2 #
 
 iZ = 85#9.85e-6 # charge number
 iRF_Freq = 7.7e3 #0.8e3 # # RF Voltage frequencey Hz
@@ -121,7 +121,7 @@ def omega_i(Omega,q,a):
 
     """
     
-    return (Omega/2)*sqrt((q**2/2) - abs(a))
+    return (Omega/2)*sqrt((q**2/2) + a)
 
 def trap_depth(mass,omega,d0):
     """
@@ -179,7 +179,7 @@ point = ax.scatter(qr_val,ar_val,color='b')
 
 omega_r_val = omega_i(iOmega,qr_val,ar_val)
 Qz = ialpha_zDC*iVdc/(iz0**2)
-omega_z_val = sqrt(2*e*Qz/imass)#omega_i(iOmega,qz_val,az_val)#(iOmega/2)*sqrt(abs(az_val))#
+omega_z_val = sqrt(2*iZ*e*Qz/imass)#omega_i(iOmega,qz_val,az_val)#(iOmega/2)*sqrt(abs(az_val))#
 CtM = plt.gcf().text(0.65,0.35,f'Charge to mass ratio: {e*iZ/imass:.2e}',fontsize=14)
 omega_r = plt.gcf().text(0.65,0.30,f'$\\omega_r = 2\\pi \\times$ {omega_r_val/(2*pi):.0f} Hz',fontsize=14)
 omega_z = plt.gcf().text(0.65,0.25,f'$\\omega_z = 2\\pi \\times$ {omega_z_val/(2*pi):.0f} Hz',fontsize=14)
@@ -342,7 +342,7 @@ def update(val):
     
     omega_r_val = omega_i(Omega,qr_val,ar_val)
     Qz = alpha_zDC*Vdc/(z0**2)
-    omega_z_val = sqrt(2*e*Qz/mass_val)#omega_i(Omega,qz_val,az_val)#(Omega/2)*sqrt(abs(az_val))#
+    omega_z_val = sqrt(2*e*Z*Qz/mass_val)#omega_i(Omega,qz_val,az_val)#(Omega/2)*sqrt(abs(az_val))#
     omega_r.set_text(f'$\\omega_r = 2\\pi \\times$ {omega_r_val/(2*pi):.0f} Hz')
     omega_z.set_text(f'$\\omega_z = 2\\pi \\times$ {omega_z_val/(2*pi):.0f} Hz')
 
