@@ -26,9 +26,9 @@ mass = lambda R: density*4*pi*(R)**3/3
 imass = mass(iRadius) # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
-ialpha_rAC = 0.3897 #0.93/2 #0.3622 #
-ialpha_zAC = 0.1181 #0.0281 #1  #
-ialpha_zDC = 0.2562 #0.38/2 #0.0933 #
+ialpha_rAC = 0.4378 #0.3897 #0.93/2 #0.3622 #
+ialpha_zAC = 0.3601 #0.1181 #0.0281 #1  #
+ialpha_zDC = 0.0248 #0.2562 #0.38/2 #0.0933 #
 
 iZ = 85#9.85e-6 # charge number
 iRF_Freq = 7.7e3 #0.8e3 # # RF Voltage frequencey Hz
