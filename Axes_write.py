@@ -16,7 +16,7 @@ def valid(line):
 with open('dims.txt','r') as file:
 	vals = [line for line in file if valid(line)]
 r0 = float(vals[0])
-z0 = 18#float(vals[1])
+z0 = float(vals[1])
 
 
 # Measurment locations
