@@ -27,8 +27,8 @@ imass = mass(iRadius) # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
 ialpha_rAC = 0.4378 #0.3897 #0.93/2 #0.3622 #
-ialpha_zAC = 0.3601 #0.1181 #0.0281 #1  #
-ialpha_zDC = 0.0248 #0.2562 #0.38/2 #0.0933 #
+ialpha_zAC = 0.0552 #0.1181 #0.0281 #1  #
+ialpha_zDC = 0.1167 #0.2562 #0.38/2 #0.0933 #
 
 iZ = 85#9.85e-6 # charge number
 iRF_Freq = 7.7e3 #0.8e3 # # RF Voltage frequencey Hz
@@ -180,7 +180,7 @@ Rpoint = ax.scatter(qr_val,ar_val,color='b',label='Radial Component')
 Zpoint = ax.scatter(qz_val,az_val,color='g',label='Axial Component')
 
 omega_r_val = omega_i(iOmega,qr_val,ar_val)
-omega_z_val = omega_i(iOmega,qz_val,az_val)#(iOmega/2)*sqrt(abs(az_val))#
+omega_z_val = (iOmega/2)*sqrt(az_val)#omega_i(iOmega,qz_val,az_val)#
 CtM = plt.gcf().text(0.65,0.35,f'Charge to mass ratio: {e*iZ/imass:.2e}',fontsize=14)
 omega_r = plt.gcf().text(0.65,0.30,f'$\\omega_r = 2\\pi \\times$ {omega_r_val/(2*pi):.0f} Hz',fontsize=14)
 omega_z = plt.gcf().text(0.65,0.25,f'$\\omega_z = 2\\pi \\times$ {omega_z_val/(2*pi):.0f} Hz',fontsize=14)
