@@ -28,7 +28,7 @@ imass = mass(iRadius) # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
 ialpha_rAC = 0.4378
-#ialpha_zAC = 0.1040 #0.0281 #1 #
+ialpha_zAC = 0.1040
 ialpha_zDC = 0.1167
 
 iZ = 85#9.85e-6 # charge number
@@ -121,7 +121,7 @@ def omega_i(Omega,q,a):
 
     """
     
-    return (Omega/2)*sqrt((q**2/2) - abs(a))
+    return (Omega/2)*sqrt((q**2/2) + a)
 
 def trap_depth(mass,omega,d0):
     """
@@ -156,7 +156,7 @@ ax.set_ylim(-0.5,0.5)
 ax.set_xlabel('$|q|$')
 ax.set_ylabel('$a$')
 
-# q_conversion = (ialpha_zAC/ialpha_rAC)*(ir0/iz0)**2
+q_conversion = (ialpha_zAC/ialpha_rAC)*(ir0/iz0)**2
 
 # Set up initial excludion regions
 ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:orange',alpha=0.5,label='Radial Unstable')
@@ -171,14 +171,14 @@ qr_val = q_r(iZ,ialpha_rAC,iVac,ir0,iOmega,iRadius)
 ar_val = a_r(iZ,ialpha_zDC,iVdc,iz0,iOmega,iRadius)
 
 # The q and a vals of the point in the z axis
-#qz_val = qr_val*q_conversion
+qz_val = qr_val*q_conversion
 az_val = ar_val*(-2)
 
 # The point plotted in the stability diagram
 point = ax.scatter(qr_val,ar_val,color='b')
 
 omega_r_val = omega_i(iOmega,qr_val,ar_val)
-omega_z_val = (iOmega/2)*sqrt(az_val)#sqrt(2*iZ*e*Qz/imass)#omega_i(iOmega,qz_val,az_val)##
+omega_z_val = omega_i(iOmega,qz_val,az_val)#(iOmega/2)*sqrt(az_val)#sqrt(2*iZ*e*Qz/imass)#omega_i(iOmega,qz_val,az_val)##
 CtM = plt.gcf().text(0.65,0.35,f'Charge to mass ratio: {e*iZ/imass:.2e}',fontsize=14)
 omega_r = plt.gcf().text(0.65,0.30,f'$\\omega_r = 2\\pi \\times$ {omega_r_val/(2*pi):.0f} Hz',fontsize=14)
 omega_z = plt.gcf().text(0.65,0.25,f'$\\omega_z = 2\\pi \\times$ {omega_z_val/(2*pi):.0f} Hz',fontsize=14)
@@ -220,17 +220,17 @@ arAC_slider = Slider(
     valinit=ialpha_rAC
 )
 
-# =============================================================================
-# # Slider for alpha_zac
-# axaz_AC= fig.add_axes([0.65, 0.7, 0.3, 0.03])
-# azAC_slider = Slider(
-#     ax=axaz_AC,
-#     label='$\\alpha_z^{AC}$',
-#     valmin=0,
-#     valmax=1,
-#     valinit=ialpha_zAC
-# )
-# =============================================================================
+
+# Slider for alpha_zac
+axaz_AC= fig.add_axes([0.65, 0.7, 0.3, 0.03])
+azAC_slider = Slider(
+    ax=axaz_AC,
+    label='$\\alpha_z^{AC}$',
+    valmin=0,
+    valmax=1,
+    valinit=ialpha_zAC
+)
+
 
 # Slider for alpha_zdc
 axaz_DC= fig.add_axes([0.65, 0.65, 0.3, 0.03])
@@ -299,7 +299,7 @@ def update(val):
     Vac       = Vac_slider.val
     Vdc       = Vdc_slider.val
     alpha_rAC = arAC_slider.val
-    #alpha_zAC = azAC_slider.val
+    alpha_zAC = azAC_slider.val
     alpha_zDC = azDC_slider.val
     Z         = Z_slider.val
     RF_Freq   = RF_Freq_slider.val*1e3
@@ -309,14 +309,14 @@ def update(val):
     z0        = z0_slider.val*1e-3
     
     mass_val = mass(Radius)
-    #q_conversion = (alpha_zAC/alpha_rAC)*(r0/z0)**2
+    q_conversion = (alpha_zAC/alpha_rAC)*(r0/z0)**2
     # The q and a values of the point in the r axis
     qr_val = q_r(Z,alpha_rAC,Vac,r0,Omega,Radius)
     ar_val = a_r(Z,alpha_zDC,Vdc,z0,Omega,Radius)
 
     # The q and a vals of the point in the z axis
-    # qz_val = qr_val*q_conversion
-    # az_val = ar_val*(-2)
+    qz_val = qr_val*q_conversion
+    az_val = ar_val*(-2)
     # Updates the point
     point.set_offsets([qr_val,ar_val])
 
@@ -340,8 +340,7 @@ def update(val):
     CtM.set_text(f'Charge to mass ratio: {e*Z/mass_val:.2e}')
     
     omega_r_val = omega_i(Omega,qr_val,ar_val)
-    az_val = ar_val*(-2)
-    omega_z_val = (iOmega/2)*sqrt(az_val)#omega_i(Omega,qz_val,az_val)#(Omega/2)*sqrt(abs(az_val))#
+    omega_z_val = omega_i(Omega,qz_val,az_val)#omega_i(Omega,qz_val,az_val)#(Omega/2)*sqrt(abs(az_val))#
     omega_r.set_text(f'$\\omega_r = 2\\pi \\times$ {omega_r_val/(2*pi):.0f} Hz')
     omega_z.set_text(f'$\\omega_z = 2\\pi \\times$ {omega_z_val/(2*pi):.0f} Hz')
 
@@ -357,7 +356,7 @@ def update(val):
 Vac_slider.on_changed(update)
 Vdc_slider.on_changed(update)
 arAC_slider.on_changed(update)
-#azAC_slider.on_changed(update)
+azAC_slider.on_changed(update)
 azDC_slider.on_changed(update)
 Z_slider.on_changed(update)
 RF_Freq_slider.on_changed(update)
@@ -374,7 +373,7 @@ def reset(event):
     Vac_slider.reset()
     Vdc_slider.reset()
     arAC_slider.reset()
-    #azAC_slider.reset()
+    azAC_slider.reset()
     azDC_slider.reset()
     Z_slider.reset()
     RF_Freq_slider.reset()
