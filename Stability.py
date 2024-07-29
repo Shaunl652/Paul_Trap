@@ -32,7 +32,7 @@ ialpha_rAC = 0.4378
 ialpha_zDC = 0.1167
 
 iZ = 85#9.85e-6 # charge number
-iRF_Freq = 7.73e3 # # RF Voltage frequencey Hz
+iRF_Freq = 7.7e3 # # RF Voltage frequencey Hz
 iOmega = 2*pi *iRF_Freq
 ir0 = (1.8e-3)/2 # distacne to pole from trap centre in m
 iz0 = (2.8e-3)/2# distance to end caps from trap centre m
@@ -121,7 +121,7 @@ def omega_i(Omega,q,a):
 
     """
     
-    return (Omega/2)*sqrt((q**2/2) + a)
+    return (Omega/2)*sqrt((q**2/2) - abs(a))
 
 def trap_depth(mass,omega,d0):
     """
