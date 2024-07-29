@@ -27,17 +27,17 @@ mass = lambda R: density*4*pi*(R)**3/3
 imass = mass(iRadius) # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
-ialpha_rAC = 0.4048
+ialpha_rAC = 0.4378
 #ialpha_zAC = 0.1040 #0.0281 #1 #
-ialpha_zDC = 0.1094
+ialpha_zDC = 0.1167
 
 iZ = 85#9.85e-6 # charge number
-iRF_Freq = 0.8e3 #7.7e3 # # RF Voltage frequencey Hz
+iRF_Freq = 7.73e3 # # RF Voltage frequencey Hz
 iOmega = 2*pi *iRF_Freq
-ir0 = 4e-3 # distacne to pole from trap centre in m
-iz0 = 16.65e-3# distance to end caps from trap centre m
-iVac = 450 # RF voltage V
-iVdc = 300 # DC volatage V
+ir0 = (1.8e-3)/2 # distacne to pole from trap centre in m
+iz0 = (2.8e-3)/2# distance to end caps from trap centre m
+iVac = 830 # RF voltage V
+iVdc = 130 # DC volatage V
 
 # Now start on the params q and a
 
@@ -172,14 +172,14 @@ ar_val = a_r(iZ,ialpha_zDC,iVdc,iz0,iOmega,iRadius)
 
 # The q and a vals of the point in the z axis
 #qz_val = qr_val*q_conversion
-#az_val = ar_val*(-2)
+az_val = ar_val*(-2)
 
 # The point plotted in the stability diagram
 point = ax.scatter(qr_val,ar_val,color='b')
 
 omega_r_val = omega_i(iOmega,qr_val,ar_val)
 Qz = ialpha_zDC*iVdc/(iz0**2)
-omega_z_val = sqrt(2*iZ*e*Qz/imass)#omega_i(iOmega,qz_val,az_val)#(iOmega/2)*sqrt(abs(az_val))#
+omega_z_val = (iOmega/2)*sqrt(az_val)#sqrt(2*iZ*e*Qz/imass)#omega_i(iOmega,qz_val,az_val)##
 CtM = plt.gcf().text(0.65,0.35,f'Charge to mass ratio: {e*iZ/imass:.2e}',fontsize=14)
 omega_r = plt.gcf().text(0.65,0.30,f'$\\omega_r = 2\\pi \\times$ {omega_r_val/(2*pi):.0f} Hz',fontsize=14)
 omega_z = plt.gcf().text(0.65,0.25,f'$\\omega_z = 2\\pi \\times$ {omega_z_val/(2*pi):.0f} Hz',fontsize=14)
