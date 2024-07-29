@@ -7,6 +7,7 @@ simulate:
 	python3 Axes_write.py
 	scuff-static < args_xAC
 	scuff-static < args_yAC
+	scuff-static < args_zAC
 	scuff-static < args_zDC
 	python3 Plot.py
 
