@@ -178,7 +178,6 @@ az_val = ar_val*(-2)
 point = ax.scatter(qr_val,ar_val,color='b')
 
 omega_r_val = omega_i(iOmega,qr_val,ar_val)
-Qz = ialpha_zDC*iVdc/(iz0**2)
 omega_z_val = (iOmega/2)*sqrt(az_val)#sqrt(2*iZ*e*Qz/imass)#omega_i(iOmega,qz_val,az_val)##
 CtM = plt.gcf().text(0.65,0.35,f'Charge to mass ratio: {e*iZ/imass:.2e}',fontsize=14)
 omega_r = plt.gcf().text(0.65,0.30,f'$\\omega_r = 2\\pi \\times$ {omega_r_val/(2*pi):.0f} Hz',fontsize=14)
@@ -341,8 +340,8 @@ def update(val):
     CtM.set_text(f'Charge to mass ratio: {e*Z/mass_val:.2e}')
     
     omega_r_val = omega_i(Omega,qr_val,ar_val)
-    Qz = alpha_zDC*Vdc/(z0**2)
-    omega_z_val = sqrt(2*e*Z*Qz/mass_val)#omega_i(Omega,qz_val,az_val)#(Omega/2)*sqrt(abs(az_val))#
+    az_val = ar_val*(-2)
+    omega_z_val = (iOmega/2)*sqrt(az_val)#omega_i(Omega,qz_val,az_val)#(Omega/2)*sqrt(abs(az_val))#
     omega_r.set_text(f'$\\omega_r = 2\\pi \\times$ {omega_r_val/(2*pi):.0f} Hz')
     omega_z.set_text(f'$\\omega_z = 2\\pi \\times$ {omega_z_val/(2*pi):.0f} Hz')
 
