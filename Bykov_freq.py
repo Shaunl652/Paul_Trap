@@ -13,10 +13,10 @@ from scipy.constants import elementary_charge
 
 
 
-q = 95*elementary_charge
-iRadius = 150 # Particle radius nm
+q = 85*elementary_charge
+iRadius = 150e-9 # Particle radius m
 density = 2000 # particle density kg/m^3
-mass = lambda R: density*4*pi*(R*1e-9)**3/3
+mass = lambda R: density*4*pi*R**3/3
 m = mass(iRadius) # mass kg
 
 Omega = 2*pi*7.7e3
