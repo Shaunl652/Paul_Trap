@@ -17,11 +17,9 @@ show:
 	gmsh TrapDC.pp
 
 mesh:
-	gmsh Endcap_bottom.stl -2 -format msh2
-	gmsh Wehnelt.stl -2 -format msh2
+	gmsh Endcap.stl -2 -format msh2
 	gmsh Rod.stl -2 -format msh2
-	mmgs -hausd 0.01 Endcap_bottom.msh
-	mmgs -hausd 0.3 Wehnelt.msh
+	mmgs -hausd 0.1 Endcap.msh
 	mmgs -hausd 0.1 Rod.msh
 
 Surface:
