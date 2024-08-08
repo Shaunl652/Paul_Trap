@@ -23,7 +23,7 @@ z0 = float(vals[1])
 xaxis = np.linspace(-r0,+r0,11)/10
 yaxis = np.linspace(-r0,+r0,11)/10
 zaxis = np.linspace(-z0,+z0,11)/10
-offset = 0
+
 
 with open('x_axis.dat','w') as f:
     for x in xaxis:
@@ -37,10 +37,8 @@ with open('z_axis.dat','w') as f:
     for z in zaxis:
         f.write(f'0 0 {z} \n')
 
-with open('zAC_axis.dat','w') as f:
+with open('z_axis.dat','w') as f:
     for z in zaxis:
         f.write(f'0 0 {z} \n')
         
-with open('zDC_axis.dat','w') as f:
-    for z in zaxis:
-        f.write(f'0 0 {z+offset} \n')
+
