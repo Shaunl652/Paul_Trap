@@ -27,17 +27,17 @@ mass = lambda R: density*4*pi*(R)**3/3
 imass = mass(iRadius) # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
-ialpha_rAC = 0.4865 #0.3622 #0.93/2 #
-ialpha_zAC = 0.1040 #0.0281 #1 #
-ialpha_zDC = 0.2070 #0.0933 #0.38/2 #
+ialpha_rAC = 0.3755
+ialpha_zAC = 0.1045
+ialpha_zDC = 0.2230
 
 iZ = 85#9.85e-6 # charge number
-iRF_Freq = 0.8e3 #7.7e3 # # RF Voltage frequencey Hz
+iRF_Freq = 0.8e3 # # RF Voltage frequencey Hz
 iOmega = 2*pi *iRF_Freq
-ir0 = 0.5e-3 #04.00e-3 #1.8e-3/2 # # distacne to pole from trap centre in m
-iz0 = 1.15e-3 #16.653e-3 #2.8e-3/2 # # distance to end caps from trap centre m
-iVac = 450 #830 # # RF voltage V
-iVdc = 300 #130 # # DC volatage V
+ir0 = 4e-3 # distacne to pole from trap centre in m
+iz0 = 6e-3 # distance to end caps from trap centre m
+iVac = 450 # RF voltage V
+iVdc = 300 # DC volatage V
 
 # Now start on the params q and a
 
@@ -121,7 +121,7 @@ def omega_i(Omega,q,a):
 
     """
     
-    return (Omega/2)*sqrt((q**2/2) - abs(a))
+    return (Omega/2)*sqrt((q**2/2) + a)
 
 def trap_depth(mass,omega,d0):
     """
@@ -156,18 +156,15 @@ ax.set_ylim(-0.5,0.5)
 ax.set_xlabel('$|q|$')
 ax.set_ylabel('$a$')
 
-
-
-
 q_conversion = (ialpha_zAC/ialpha_rAC)*(ir0/iz0)**2
-
 
 # Set up initial excludion regions
 ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:orange',alpha=0.5,label='Radial Unstable')
 ExcludeR2 = ax.fill_between(q_axis,+mathieu_b(1,q_axis),  y2=+10,color='tab:orange',alpha=0.5)
-ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*q_conversion)/2,y2=+10,color='tab:red',alpha=0.5,label='Axialy Unstable')
-ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
-ExcludeR3 = ax.fill_between(q_axis,-(q_axis*q_conversion)**2/4,y2=-10,color='tab:orange',alpha=0.5)
+ExcludeZ1 = ax.fill_between(q_axis,[0 for i in q_axis],   y2=+10,color='tab:red',   alpha=0.5,label='Axialy Unstable')
+#ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*q_conversion)/2,y2=+10,color='tab:red',alpha=0.5,label='Axialy Unstable')
+#ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
+#ExcludeR3 = ax.fill_between(q_axis,-(q_axis*q_conversion)**2/4,y2=-10,color='tab:orange',alpha=0.5)
 
 # The q and a values of the point in the r axis
 qr_val = q_r(iZ,ialpha_rAC,iVac,ir0,iOmega,iRadius)
@@ -181,13 +178,25 @@ az_val = ar_val*(-2)
 point = ax.scatter(qr_val,ar_val,color='b')
 
 omega_r_val = omega_i(iOmega,qr_val,ar_val)
-omega_z_val = omega_i(iOmega,qz_val,az_val)#(iOmega/2)*sqrt(abs(az_val))#
+omega_z_val = omega_i(iOmega,qz_val,az_val)#(iOmega/2)*sqrt(az_val)#sqrt(2*iZ*e*Qz/imass)#omega_i(iOmega,qz_val,az_val)##
+
 CtM = plt.gcf().text(0.65,0.35,f'Charge to mass ratio: {e*iZ/imass:.2e}',fontsize=14)
+
 omega_r = plt.gcf().text(0.65,0.30,f'$\\omega_r = 2\\pi \\times$ {omega_r_val/(2*pi):.0f} Hz',fontsize=14)
 omega_z = plt.gcf().text(0.65,0.25,f'$\\omega_z = 2\\pi \\times$ {omega_z_val/(2*pi):.0f} Hz',fontsize=14)
+
 depth_r = plt.gcf().text(0.65,0.20,f'depth r: {trap_depth(imass,omega_r_val,ir0):.2e} K',fontsize=14)
 depth_z = plt.gcf().text(0.65,0.15,f'depth z: {trap_depth(imass,omega_z_val,iz0):.2e} K',fontsize=14)
 
+# if qr_val > ir0:
+#     amptd_r = plt.gcf().text(0.65,0.10,f'Radial Amplitude: {qr_val*1e3:.2f} mm EXCEEDS TRAP BOUNDS',fontsize=14,color='r')
+# else:
+#     amptd_r = plt.gcf().text(0.65,0.10,f'Radial Amplitude: {qr_val*1e3:.2f} mm',fontsize=14,color='k')
+
+# if qz_val > iz0:
+#     amptd_z = plt.gcf().text(0.65,0.05,f'Axial Amplitude: {qz_val*1e3:.2f} mm EXCEEDS TRAP BOUNDS',fontsize=14,color='r')
+# else:
+#     amptd_z = plt.gcf().text(0.65,0.05,f'Axial Amplitude: {qz_val*1e3:.2f} mm',fontsize=14,color='k')
 
 ax.legend()
 
@@ -222,6 +231,8 @@ arAC_slider = Slider(
     valmax=1,
     valinit=ialpha_rAC
 )
+
+
 # Slider for alpha_zac
 axaz_AC= fig.add_axes([0.65, 0.7, 0.3, 0.03])
 azAC_slider = Slider(
@@ -231,6 +242,8 @@ azAC_slider = Slider(
     valmax=1,
     valinit=ialpha_zAC
 )
+
+
 # Slider for alpha_zdc
 axaz_DC= fig.add_axes([0.65, 0.65, 0.3, 0.03])
 azDC_slider = Slider(
@@ -320,30 +333,41 @@ def update(val):
     point.set_offsets([qr_val,ar_val])
 
 
-    # Updatest the exclusion regions
-    global ExcludeR1,ExcludeR2,ExcludeZ1,ExcludeZ2,ExcludeR3
-    ExcludeR1.remove()
-    ExcludeR2.remove()
-    ExcludeZ1.remove()
-    ExcludeZ2.remove()
-    ExcludeR3.remove()
-    
-    ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:orange',alpha=0.5)
-    ExcludeR2 = ax.fill_between(q_axis,+mathieu_b(1,q_axis),  y2=+10,color='tab:orange',alpha=0.5)
-    ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*q_conversion)/2,y2=+10,color='tab:red',alpha=0.5)
-    ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
-    ExcludeR3 = ax.fill_between(q_axis,-(q_axis*q_conversion)**2/4,y2=-10,color='tab:orange',alpha=0.5)
+# =============================================================================
+#     # Updatest the exclusion regions
+#     global ExcludeR1,ExcludeR2,ExcludeZ1,ExcludeZ2,ExcludeR3
+#     ExcludeR1.remove()
+#     ExcludeR2.remove()
+#     ExcludeZ1.remove()
+#     ExcludeZ2.remove()
+#     ExcludeR3.remove()
+#     
+#     ExcludeR1 = ax.fill_between(q_axis,+mathieu_a(0,q_axis),  y2=-10,color='tab:orange',alpha=0.5)
+#     ExcludeR2 = ax.fill_between(q_axis,+mathieu_b(1,q_axis),  y2=+10,color='tab:orange',alpha=0.5)
+#     ExcludeZ1 = ax.fill_between(q_axis,-mathieu_a(0,q_axis*q_conversion)/2,y2=+10,color='tab:red',alpha=0.5)
+#     ExcludeZ2 = ax.fill_between(q_axis,-mathieu_b(1,q_axis*q_conversion)/2,y2=-10,color='tab:red',alpha=0.5)
+#     ExcludeR3 = ax.fill_between(q_axis,-(q_axis*q_conversion)**2/4,y2=-10,color='tab:orange',alpha=0.5)
+# =============================================================================
 
     CtM.set_text(f'Charge to mass ratio: {e*Z/mass_val:.2e}')
     
     omega_r_val = omega_i(Omega,qr_val,ar_val)
-    omega_z_val = omega_i(Omega,qz_val,az_val)#(Omega/2)*sqrt(abs(az_val))#
+    omega_z_val = omega_i(Omega,qz_val,az_val)#omega_i(Omega,qz_val,az_val)#(Omega/2)*sqrt(abs(az_val))#
     omega_r.set_text(f'$\\omega_r = 2\\pi \\times$ {omega_r_val/(2*pi):.0f} Hz')
     omega_z.set_text(f'$\\omega_z = 2\\pi \\times$ {omega_z_val/(2*pi):.0f} Hz')
 
-    
     depth_r.set_text(f' depth r: {trap_depth(mass_val,omega_r_val,r0):.2e} K')
     depth_z.set_text(f' depth z: {trap_depth(mass_val,omega_z_val,z0):.2e} K')
+    
+    # if qr_val > r0:
+    #     amptd_r.set_text(0.65,0.10,f'Radial Amplitude: {qr_val*1e3:.2f} mm EXCEEDS TRAP BOUNDS',fontsize=14,color='r')
+    # else:
+    #     amptd_r.set_text(0.65,0.10,f'Radial Amplitude: {qr_val*1e3:.2f} mm',fontsize=14,color='k')
+
+    # if qz_val > z0:
+    #     amptd_z.set_text(0.65,0.05,f'Axial Amplitude: {qz_val*1e3:.2f} mm EXCEEDS TRAP BOUNDS',fontsize=14,color='r')
+    # else:
+    #     amptd_z.set_text(0.65,0.05,f'Axial Amplitude: {qz_val*1e3:.2f} mm',fontsize=14,color='k')
 
     # Redraw the plot
     fig.canvas.draw_idle()

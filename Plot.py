@@ -103,14 +103,14 @@ print(f'alpha_r^AC = {alpha_rAC:.4f}')
 # Now we move onto alpha_z^AC
 # =============================================================================
 
-with open('zAC_axis.dat','r') as file:
+with open('z_axis.dat','r') as file:
     lines = (line.strip() for line in file if valid(line))
     zAC_coords = np.array([extract(line) for line in lines])
     
 zAC_points = np.array([float(z) for z in zAC_coords[:,2]])
 zAC_axis = np.linspace(min(zAC_points),max(zAC_points),1001)
 
-with open('TrapAC.zAC_axis.out','r') as file:
+with open('TrapAC.z_axis.out','r') as file:
     lines = (line.strip() for line in file if valid(line))
     data = np.array([extract(line) for line in lines])
     
@@ -137,14 +137,14 @@ print(f'alpha_z^AC = {abs(alpha_zAC):.4f}')
 
 # Car reuse the z coords ect
 
-with open('zDC_axis.dat','r') as file:
+with open('z_axis.dat','r') as file:
     lines = (line.strip() for line in file if valid(line))
     zDC_coords = np.array([extract(line) for line in lines])
     
 zDC_points = np.array([float(z) for z in zDC_coords[:,2]])
 zDC_axis = np.linspace(min(zDC_points),max(zDC_points),1001)
 
-with open('TrapDC.zDC_axis.out','r') as file:
+with open('TrapDC.z_axis.out','r') as file:
     lines = (line.strip() for line in file if valid(line))
     data = np.array([extract(line) for line in lines])
     
