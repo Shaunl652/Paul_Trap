@@ -28,14 +28,14 @@ imass = mass(iRadius) # mass kg
 
 # Geometric parameters, recall alpha_r = (alpha_x+alpha_y)/2
 ialpha_rAC = 0.3755
-ialpha_zAC = 0.0376
-ialpha_zDC = 0.0771
+ialpha_zAC = 0.1045
+ialpha_zDC = 0.2230
 
 iZ = 85#9.85e-6 # charge number
 iRF_Freq = 0.8e3 # # RF Voltage frequencey Hz
 iOmega = 2*pi *iRF_Freq
-ir0 = 04.00e-3 # distacne to pole from trap centre in m
-iz0 = 16.65e-3 # distance to end caps from trap centre m
+ir0 = 4e-3 # distacne to pole from trap centre in m
+iz0 = 6e-3 # distance to end caps from trap centre m
 iVac = 450 # RF voltage V
 iVdc = 300 # DC volatage V
 
