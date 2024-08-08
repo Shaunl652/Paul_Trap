@@ -1,8 +1,8 @@
 simulate:
 	-rm TrapAC.x_axis.out
 	-rm TrapAC.y_axis.out
-	-rm TrapAC.zAC_axis.out
-	-rm TrapDC.zDC_axis.out
+	-rm TrapAC.z_axis.out
+	-rm TrapDC.z_axis.out
 	python3 geo_write.py
 	python3 Axes_write.py
 	scuff-static < args_xAC
@@ -17,9 +17,7 @@ show:
 	gmsh TrapDC.pp
 
 mesh:
-	gmsh Endcap.stl -2 -format msh2
 	gmsh Rod.stl -2 -format msh2
-	mmgs -hausd 0.1 Endcap.msh
 	mmgs -hausd 0.1 Rod.msh
 
 Surface:
