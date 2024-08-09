@@ -3,17 +3,25 @@
 This is a set of code designed to characterise a Paul trap geometry and then predict the parameters that lead to stable trapping.
 For use in the Swansea University Optomechanics lab, this is very early work.
 
-## Instructions
-Below is the basic procedure to follow to test if a trap geometry and parameters are stable:
+## Files
+Here is a brief explanation of what each file is/does. We start by going through the <code>.py</code> files.
+1) <code>Axes_Write.py</code>: This will write a number of <code>.dat</code> files containing the points in Cartesian coordinates where we want to measure the electrostatic potential.
+2) <code>Charge_Estimate.py</code>: This will estimate the charge on the particle from a given trap frequency. Results are given in $C kg^{-1}$, $C$, and number of elementary charges.
+3) <code>geo_write.py</code>: This will write two <code>.scuffgeo</code> files. One for the AC voltages, and one for the DC voltages. These files describe the geometric transformations of the <code>Rod.o.msh</code> file to make the trap we have designed. They are identical in content but have different names to differentiate the SCUFF-EM output files.
+4) <code>Paschen_Law.py</code>: I couldn't find a nice simple graph that showed the Paschen curve in nice units. This plots a graph whose x axis is in mBar m.
+5) <code>Plot.py</code>: This reads in the <code>.out</code> files that SCUFF-EM outputs and finds the geometric factors $\alpha_r^{\text{AC}}$, $\alpha_z^{\text{AC}}$, and $\alpha_z^{\text{DC}}$.
+6) <code>Stability.py</code>: Plots the Stability diagram and lets you change the values with sliders.
 
-1) **Model the trap geometry as a set of <code>.stl</code> files.**  In <code>Trap_Scuff</code> I have an example. I have the files: <code>ECB.stl</code>, <code>ECT.stl</code>, and <code>Rod.stl</code>. These are the files for the Bottom End Cap, Top End Cap, and RF Rods respectively. Because the four rods are the same, I have meshed one and include translations in the next step to save computational power.
+### Makefile
+We also have a <code>Makefile</code>. This contains a number of commands that can be used to simulate the trap and calculate the geometric factors. I give the commands in the suggested order to run them.
+1) <code>make mesh</code>: This takes <code>Rod.stl</code> and converts it into <code>Rod.o.msh</code> which SCUFF-EM can work with. By changing the number in the second line (<code>mmgs -hausd 0.1 Rod.msh</code>) you can change the mesh density. Smaller numbers make more triangles (The number is the max distance from the re-meshed version and the 'perfect' original <code>.stl</code> file).
+2) <code>make show</code>: This runs <code>geo_write.py</code> to ensure the relevant <code>.scuffgeo</code> files exist and then shows what the trap looks like using gmsh.
+3) <code>make simulate</code>: The last step. This removes all <code>.out</code> files from SCUFF-EM (the files append and do not overwrite without this step). Then it ensures that the write <code>.dat</code> files exist by running <code>Axes_Write.py</code>. When all the necessary files exist, it runs SCUFF-EM for each axis and relevant excitations using the various <code>args</code> files. Finally, we plot the potentials and prints the values for each geometric factor.
 
-2) **Set up the extra files to define the problem.** This include the <code>.scuffgeo</code>, <code>.Excitations</code>, and various <code>args</code> files. The <code>TrapAC.scuffgeo</code> and <code>TrapDC.scuffgeo</code> are exactly the same and define each of the trapping rods and the end caps displacing them into the right locations. I have these as two separate files so that the output files are given more pertinent names. The <code>.Excitations</code> files contain the details about which electrodes are given a voltage for each test.
-
-3) **Run the code <code>scuff-static < args</code> replacing <code>args</code> with the corresponding <code>args</code> file.** I have <code>args</code> files for each geometric factor, $\alpha_x^{\text{AC}}$, $\alpha_y^{\text{AC}}$, $\alpha_z^{\text{AC}}$, and $\alpha_z^{\text{DC}}$. They simply tell <code>scuff-static</code> which of the extra files to look at when finding the potentials. They will output <code>.out</code> files, the files I have set up will name them <code>Trap{Voltage}.{axis}_axis.out</code> where the <code>{Voltage}</code> is replaced with either <code>AC</code> or <code>DC</code> depending on which electrodes are excited, and <code>{axis}</code> is replaced with the axis we measure on.
-
-4) **Run <code>Plot.py</code> to find the geometric factors.** This code will plot the potential measured by <code>scuff-static</code> for each case and curve fit this to a quadratic (See Chap. 3 of Woodrow Thesis) and read off the amplitude of the potential. From this we find the geometric factors via $\alpha_i^u = \frac{Q_i^V d^2}{V_u}$ where $i$ is the axis, and $u$ is either AC or DC dependant on with electrodes are excited (See Chap 2 in Woodrow Thesis).
-
-5) **Run <code>Stability.py</code> and set the appropriate geometric factors.** This will plot a graph of the Mathieu stability regions and plot where the current set up falls in this parameter space. I have defined $a = - \frac{4ZeQ_z^{\text{DC}}}{m\Omega^2} = a_x = a_y = -\frac{a_z}{2}$ and $|q| = \frac{4ZeQ_r^{\text{AC}}}{m\Omega^2} = |q_x| = |q_y| = \left|q_z \frac{\alpha_z^{\text{AC}}}{\alpha_r^{\text{AC}}} \left(\frac{r_0}{z_0}\right)^2 \right|$ and $\alpha_r^{\text{AC}} = \frac{\alpha_x^{\text{AC}} + \alpha_y^{\text{AC}}}{2}$. The graph has 3 regions shown. In red the particle's secular motion is axially unstable and will be lost. In orange it is radially unstable. The unshaded region is the stable region. Note that as we change the AC geometric factors or the trap size, the stable region changes due to the ratio in $\left|q_z \frac{\alpha_z^{\text{AC}}}{\alpha_r^{\text{AC}}} \left(\frac{r_0}{z_0}\right)^2 \right|$. As long as the blue point is within the unshaded region, we *should* have stable trapping. We can adjust the sliders to see what parameters are needed to achive this with a given trap geometry.
-
-6) **Once the frequency of secular radial motion has been found, run <code>Charge_Estimate.py</code>.** Make sure that all the variables are set right and then run the code to find the charge on the particle. My hope in the future is to set this up so that we simply pass the motion of the particle to the code and it will estimate the frequency itself and output the charge. Currently this is using values from the 2020 Bykov paper and gives pretty close agreement.
+### Other Files
+There are a number of other files necessary, this is a drief description of them.
+1) various <code>args</code> files: There contain the names of files that SCUFF-EM uses when simulating the relevant data.
+2) <code>dims.txt</code>: This contains the trap dimensions in mm.
+3) <Rod.stl</code>: The mesh for the rod that will be used as the RF and DC electrodes. This is meshed in the centre of the coordinate axis and copied and moved by the <code>.scuffgeo</code> files.
+4) Various <code>.out</code> and <code>.pp</code> files: The outputs of SCUFF-EM.
+5) <code>VAC.Excitations</code> and <code>VDC.Excitations</code>: The potential in each set of electrodes when calculating the electrostatic field.

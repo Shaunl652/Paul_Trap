@@ -20,17 +20,3 @@ mesh:
 	gmsh Rod.stl -2 -format msh2
 	mmgs -hausd 0.1 Rod.msh
 
-Surface:
-	-rm TrapAC.plane.out
-	python3 Axes_write.py
-	python3 Plane_axes.py
-	scuff-static < args_Plane
-
-Planes:
-	python3 Plane_axes.py
-	-rm TrapAC.xy_plane.out
-	-rm TrapAC.xz_plane.out
-	-rm TrapAC.yz_plane.out
-	scuff-static < args_xyplane
-	scuff-static < args_xzplane
-	scuff-static < args_yzplane

@@ -20,9 +20,11 @@ def extract(line):
     values = line.strip().split()
     return [v for v in values]
 
+# Quadratic funtion for interpolating later
 f = lambda x,a,b,c: a*x**2 + b*x + c
 
-# Now we want these in SI units as we aren't passing anything to SCUFF-EM anymore
+# Read in the trap dimensions in mm
+# By sticking in mm the units cancel out in the correct way for the geometric factors
 with open('dims.txt','r') as file:
 	#lines=(line.strip() for line in file if valid(line))
 	dims = [line for line in file if valid(line)] 
@@ -31,36 +33,41 @@ r0 = float(dims[0])
 z0 = float(dims[1])
 
 
-
-
 # =============================================================================
 # First start with alpha_x^AC
 # =============================================================================
 
-
+# Read in the measurment axis
 with open('x_axis.dat','r') as file:
     lines = (line.strip() for line in file if valid(line))
     x_coords = np.array([extract(line) for line in lines])
     
+# Convert them to floats and build a new axis for interpolating
 x_points = np.array([float(x) for x in x_coords[:,0]])
 x_axis = np.linspace(min(x_points),max(x_points),1001)
 
+# Now we read in the potential values at each x_point
 with open('TrapAC.x_axis.out','r') as file:
     lines = (line.strip() for line in file if valid(line))
     xACdata = np.array([extract(line) for line in lines])
     
+# The potential at each x_point, now as floats
 x_pot = [float(phi) for phi in xACdata[:,4]]
 
-
+# Start plotting the values
 fig_xAC,ax = plt.subplots(figsize=(10,5))
+# Plots the potentials measured by SCUFF-EM
 ax.scatter(x_points,x_pot,marker='x',color='r',label='Simulation $x$ axis')
 
+# Find the curve fit params mathcing the measured data onto a quadratic function
 xAC_vals, errs = curve_fit(f, x_points, x_pot)
 
+# Plot the interpolated function
 ax.plot(x_axis,f(x_axis,xAC_vals[0],xAC_vals[1],xAC_vals[2]),label=f'Fit: $ax^2 + bx + c$\n $a=$ {xAC_vals[0]:.1e}; $b=$ {xAC_vals[1]:.1e}; $c=$ {xAC_vals[2]:.1e}')
 ax.set(xlabel='$x$ [mm]',ylabel='$\\phi$ [V]',title='Potential due to RF voltage')
 ax.legend(loc='upper right')
 
+# Finds and prints the geometric factor
 alpha_xAC = xAC_vals[0]*r0**2
 print(f'alpha_x^AC = {abs(alpha_xAC):.4f}')
  
@@ -68,6 +75,7 @@ print(f'alpha_x^AC = {abs(alpha_xAC):.4f}')
 
 # =============================================================================
 # Now move onto alpha_y^AC
+# Follows pretty much the same procedure as done above
 # =============================================================================
 
 with open('y_axis.dat','r') as file:
@@ -84,7 +92,7 @@ with open('TrapAC.y_axis.out','r') as file:
 y_pot = [float(phi) for phi in yACdata[:,4]]
 
 
-#fig_yAC,ax = plt.subplots(figsize=(10,5))
+# We dont introduce a new fig here as we want to see the x and y plots on the same fig
 ax.scatter(y_points,y_pot,marker='x',color='b',label='Simulation $y$ axis')
 
 yAC_vals, errs = curve_fit(f, y_points, y_pot)
@@ -96,6 +104,7 @@ ax.legend(loc='upper right')
 alpha_yAC = yAC_vals[0]*r0**2
 print(f'alpha_y^AC = {abs(alpha_yAC):.4f}')
 print('--------------------------------------------------')
+# Now we want the vlaue of alpha_r for later computations
 alpha_rAC = (abs(alpha_xAC)+abs(alpha_yAC))/2
 print(f'alpha_r^AC = {alpha_rAC:.4f}')
 
