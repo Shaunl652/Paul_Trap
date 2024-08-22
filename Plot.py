@@ -173,4 +173,4 @@ ax.legend(loc='upper right')
 alpha_zDC = zDC_vals[0]*z0**2
 print(f'alpha_z^DC = {abs(alpha_zDC):.4f}')
 
-
+plt.show()
